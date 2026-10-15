@@ -3,60 +3,257 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KDS-IEC | ATC Center Login</title>
+    <title>KDS-IEC | ATC Management Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="bg-slate-900 text-white flex items-center justify-center min-h-screen">
-    <div class="bg-slate-800 p-8 rounded-2xl shadow-2xl max-w-md w-full border border-slate-700">
-        <div class="text-center mb-6">
-            <h1 class="text-2xl font-bold text-blue-400">🏢 ATC Center Login</h1>
-            <p class="text-xs text-slate-400 mt-1">KDS-IEC Authorized Partner Portal</p>
-        </div>
+<body class="bg-slate-100 text-slate-900 font-sans">
+
+    <div class="flex h-screen overflow-hidden">
         
-        <form onsubmit="handleLogin(event)" class="space-y-4">
-            <div>
-                <label class="block text-xs font-bold text-slate-300 uppercase">ATC ID / Center ID</label>
-                <input type="text" id="atcId" placeholder="Jaise: ATC001" required class="w-full bg-slate-900 border border-slate-700 p-3 rounded-xl focus:outline-none focus:border-blue-500 text-white mt-1 uppercase">
+        <!-- Sidebar Navigation -->
+        <aside class="w-72 bg-[#0f172a] text-slate-300 flex flex-col shadow-xl overflow-y-auto text-xs">
+            <div class="p-4 border-b border-slate-800 flex items-center gap-3 bg-[#090d16] sticky top-0 z-10">
+                <div class="bg-blue-600 p-2 rounded-lg text-white font-bold text-base"><i class="fa-solid fa-graduation-cap"></i></div>
+                <div>
+                    <h1 class="font-bold text-sm text-white">KDS-IEC</h1>
+                    <p class="text-[9px] text-blue-400">Authorized Training Center</p>
+                </div>
             </div>
-            <div>
-                <label class="block text-xs font-bold text-slate-300 uppercase">Password</label>
-                <input type="password" id="atcPass" placeholder="******" required class="w-full bg-slate-900 border border-slate-700 p-3 rounded-xl focus:outline-none focus:border-blue-500 text-white mt-1">
-            </div>
-            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-bold transition shadow-lg">Login to Dashboard</button>
-        </form>
-        <div id="loginMsg" class="mt-4 text-center text-sm font-semibold"></div>
-        
-        <div class="mt-6 text-center">
-            <a href="index.html" class="text-xs text-blue-400 font-semibold hover:underline">⬅ Back to Home</a>
+
+            <nav class="p-4 space-y-6">
+                <div>
+                    <a href="#" onclick="showSection('dashboard')" class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-blue-600 text-white font-bold shadow"><i class="fa-solid fa-house w-4"></i> Dashboard</a>
+                </div>
+                <div class="space-y-1">
+                    <p class="text-[10px] font-bold uppercase text-slate-500 px-3 tracking-wider">Certificates & Services</p>
+                    <a href="#" onclick="showSection('verification')" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-800 transition"><i class="fa-solid fa-certificate w-4 text-green-400"></i> Verify Certificate</a>
+                    <a href="#" onclick="showSection('admission')" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-800 transition"><i class="fa-solid fa-user-plus w-4 text-indigo-400"></i> New Admission</a>
+                    <a href="#" onclick="showSection('wallet')" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-800 transition"><i class="fa-solid fa-wallet w-4 text-purple-400"></i> My Wallet</a>
+                </div>
+                <div class="pt-4 border-t border-slate-800">
+                    <button onclick="logout()" class="w-full text-left flex items-center gap-2 px-3 py-2 rounded-lg text-red-400 hover:bg-red-950/40 transition font-bold"><i class="fa-solid fa-right-from-bracket w-4"></i> Logout</button>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content Panel -->
+        <div class="flex-1 flex flex-col h-full overflow-y-auto">
+            
+            <header class="bg-white border-b border-slate-200 px-8 py-4 flex justify-between items-center shadow-sm">
+                <h2 class="font-bold text-base text-slate-800">Achieve More! ✨</h2>
+                <div class="flex items-center gap-3">
+                    <span id="headerCenterBadge" class="bg-blue-50 border border-blue-200 px-3 py-1 rounded-full text-xs font-bold text-blue-900">Loading...</span>
+                    <button onclick="logout()" class="bg-red-600 text-white px-4 py-1.5 rounded-lg text-xs font-bold hover:bg-red-700">Logout</button>
+                </div>
+            </header>
+
+            <main class="p-8 max-w-6xl w-full mx-auto space-y-6">
+                
+                <!-- Welcome Banner (Dynamic based on logged-in ATC) -->
+                <div class="bg-gradient-to-r from-emerald-700 to-teal-800 text-white p-6 rounded-2xl shadow-md flex justify-between items-center">
+                    <div>
+                        <h3 id="centerTitle" class="text-xl font-bold">Welcome, Loading...</h3>
+                        <p id="centerAddress" class="text-xs text-emerald-200 mt-1">🏢 Loading Center Details...</p>
+                    </div>
+                    <div class="bg-emerald-900/60 border border-emerald-500/40 px-4 py-2 rounded-xl text-right text-xs">
+                        <p class="text-[10px] text-emerald-300">Wallet Balance</p>
+                        <p id="walletBal" class="font-bold text-sm">₹0.00</p>
+                    </div>
+                </div>
+
+                <!-- 1. DASHBOARD -->
+                <div id="sec-dashboard" class="space-y-6">
+                    <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-200">
+                        <h4 class="text-xs font-bold uppercase text-slate-500 mb-2"><i class="fa-solid fa-magnifying-glass"></i> Student Details Lookup</h4>
+                        <div class="flex gap-2">
+                            <input type="text" id="lookupRoll" placeholder="Roll Number ya Enrollment No daalkar search karein..." class="w-full border border-slate-300 p-3 rounded-xl text-sm outline-none focus:border-blue-600 bg-slate-50">
+                            <button onclick="searchStudent()" class="bg-blue-900 text-white px-6 py-3 rounded-xl text-xs font-bold">Search</button>
+                        </div>
+                        <div id="lookupResult" class="mt-4"></div>
+                    </div>
+                </div>
+
+                <!-- 2. VERIFICATION -->
+                <div id="sec-verification" class="bg-white p-6 rounded-2xl shadow-md border border-slate-200 hidden">
+                    <h3 class="font-bold text-xl text-blue-900 mb-4 border-b pb-3"><i class="fa-solid fa-certificate"></i> Online Certificate Verification</h3>
+                    <div class="flex gap-2 max-w-xl">
+                        <input type="text" id="verifyRoll" placeholder="Roll Number ya Enrollment No dalein..." class="border p-3 rounded-xl w-full focus:ring-2 focus:ring-blue-900 outline-none text-sm">
+                        <button onclick="verifyCertificateModal()" class="bg-blue-900 text-white px-6 py-3 rounded-xl font-semibold text-sm hover:bg-blue-800">Search</button>
+                    </div>
+                    <div id="verifyResult" class="mt-6"></div>
+                </div>
+
+                <!-- 3. ADMISSION -->
+                <div id="sec-admission" class="bg-white p-6 rounded-2xl shadow-md border border-slate-200 hidden max-w-2xl">
+                    <h3 class="font-bold text-xl text-blue-900 mb-4 border-b pb-3"><i class="fa-solid fa-user-plus"></i> New Student Admission</h3>
+                    <form id="admissionForm" onsubmit="submitAdmission(event)" class="space-y-4 text-sm">
+                        <div>
+                            <label class="block font-bold text-slate-700">Student Full Name</label>
+                            <input type="text" id="studentName" required class="border p-3 rounded-xl w-full mt-1 outline-none">
+                        </div>
+                        <div>
+                            <label class="block font-bold text-slate-700">Father's Name</label>
+                            <input type="text" id="fatherName" required class="border p-3 rounded-xl w-full mt-1 outline-none">
+                        </div>
+                        <div>
+                            <label class="block font-bold text-slate-700">Select Course</label>
+                            <select id="courseName" class="border p-3 rounded-xl w-full mt-1 outline-none">
+                                <option value="Certificate in Accounting with GST">Certificate in Accounting with GST</option>
+                                <option value="Tally Prime Advance with GST">Tally Prime Advance with GST</option>
+                                <option value="Basic Computer Course (BCC)">Basic Computer Course (BCC)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block font-bold text-slate-700">Passport Photo URL</label>
+                            <input type="url" id="photoURL" placeholder="Image link paste karein" required class="border p-3 rounded-xl w-full mt-1 outline-none">
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block font-bold text-slate-700">Total Course Fee (₹)</label>
+                                <input type="number" id="courseFee" value="5000" class="border p-3 rounded-xl w-full mt-1">
+                            </div>
+                            <div>
+                                <label class="block font-bold text-slate-700">Paid Fee (₹)</label>
+                                <input type="number" id="paidFee" value="1000" class="border p-3 rounded-xl w-full mt-1">
+                            </div>
+                        </div>
+                        <button type="submit" class="w-full bg-green-700 text-white py-3 rounded-xl font-bold hover:bg-green-600 transition shadow-lg">Submit Admission</button>
+                    </form>
+                    <div id="formMsg" class="mt-4 text-center text-sm font-semibold"></div>
+                </div>
+
+                <!-- 4. WALLET -->
+                <div id="sec-wallet" class="bg-white p-6 rounded-2xl shadow-md border border-slate-200 hidden max-w-xl">
+                    <h3 class="font-bold text-xl text-blue-900 mb-4 border-b pb-3"><i class="fa-solid fa-wallet"></i> Wallet Overview</h3>
+                    <div class="bg-blue-50 p-6 rounded-xl border border-blue-200 flex justify-between items-center">
+                        <div>
+                            <p class="text-xs text-blue-700 font-bold uppercase">Current Available Balance</p>
+                            <h4 id="walletDisplay" class="text-3xl font-extrabold text-blue-900 mt-1">₹0.00</h4>
+                        </div>
+                    </div>
+                </div>
+
+            </main>
         </div>
     </div>
 
     <script>
         const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbypRMDzAnIT7X777dBnJGaO5tFk5kZuZeqGFj--ldAX1-0HYPWY66E2kfGxoyk4PZ2_/exec";
+        
+        let loggedInATC = null;
 
-        function handleLogin(e) {
-            e.preventDefault();
-            const id = document.getElementById('atcId').value.trim();
-            const pass = document.getElementById('atcPass').value.trim();
-            const msg = document.getElementById('loginMsg');
-            msg.innerHTML = '<span class="text-blue-400">Checking credentials...</span>';
+        window.onload = function() {
+            const storedData = localStorage.getItem('atcData');
+            if(!storedData) {
+                // Agar login nahi hai toh wapas login page par bhej do
+                window.location.href = "atc_login.html";
+                return;
+            }
+            
+            loggedInATC = JSON.parse(storedData);
+            document.getElementById('centerTitle').innerText = `Welcome, ${loggedInATC.ownerName} (${loggedInATC.centerName})`;
+            document.getElementById('centerAddress').innerText = `🏢 Location / Address: ${loggedInATC.address} | ID: ${loggedInATC.atcId}`;
+            document.getElementById('walletBal').innerText = `₹${loggedInATC.walletBalance}`;
+            document.getElementById('walletDisplay').innerText = `₹${loggedInATC.walletBalance}`;
+            document.getElementById('headerCenterBadge').innerText = `🏢 ${loggedInATC.centerName} (${loggedInATC.address})`;
+        };
 
-            fetch(`${WEB_APP_URL}?action=atcLogin&id=${id}&pass=${pass}`)
+        function logout() {
+            localStorage.removeItem('atcData');
+            window.location.href = "atc_login.html";
+        }
+
+        function showSection(sec) {
+            ['dashboard', 'verification', 'admission', 'wallet'].forEach(id => {
+                document.getElementById('sec-' + id).classList.add('hidden');
+            });
+            document.getElementById('sec-' + sec).classList.remove('hidden');
+        }
+
+        function searchStudent() {
+            const roll = document.getElementById('lookupRoll').value.trim();
+            const box = document.getElementById('lookupResult');
+            if(!roll) { box.innerHTML = '<p class="text-red-500 text-xs">Kripya Roll Number dalein!</p>'; return; }
+            box.innerHTML = '<p class="text-slate-500 text-xs">Searching...</p>';
+
+            fetch(`${WEB_APP_URL}?action=verify&roll=${roll}`)
                 .then(res => res.json())
                 .then(data => {
                     if(data.status === "success") {
-                        // Login successful hote hi data browser mein save karke dashboard par bhej denge
-                        localStorage.setItem('atcData', JSON.stringify(data));
-                        msg.innerHTML = '<span class="text-green-400">Login Successful! Redirecting...</span>';
-                        setTimeout(() => {
-                            window.location.href = "iec.html";
-                        }, 800);
+                        box.innerHTML = `
+                            <div class="bg-green-50 border p-4 rounded-xl mt-2 text-xs flex gap-4 items-center">
+                                <img src="${data.photoURL}" class="w-16 h-16 object-cover rounded-lg border">
+                                <div>
+                                    <p><strong>Name:</strong> ${data.studentName}</p>
+                                    <p><strong>Course:</strong> ${data.course}</p>
+                                    <p><strong>Enrollment:</strong> ${data.enrollmentNo} | <strong>Roll:</strong> ${data.rollNumber}</p>
+                                    <p class="text-green-700 font-bold mt-1">✔ Status: Approved & Verified</p>
+                                </div>
+                            </div>
+                        `;
                     } else {
-                        msg.innerHTML = '<span class="text-red-400">❌ Invalid ATC ID or Password!</span>';
+                        box.innerHTML = '<p class="text-red-500 text-xs mt-2">❌ Record nahi mila ya approval pending hai.</p>';
                     }
-                }).catch(() => {
-                    msg.innerHTML = '<span class="text-red-400">Connection error.</span>';
-                });
+                }).catch(() => { box.innerHTML = '<p class="text-red-500 text-xs">Error connecting database.</p>'; });
+        }
+
+        function verifyCertificateModal() {
+            const roll = document.getElementById('verifyRoll').value.trim();
+            const box = document.getElementById('verifyResult');
+            if(!roll) { box.innerHTML = '<p class="text-red-500 text-sm">Kripya Roll Number dalein!</p>'; return; }
+            box.innerHTML = '<p class="text-slate-500 text-sm">Searching...</p>';
+
+            fetch(`${WEB_APP_URL}?action=verify&roll=${roll}`)
+                .then(res => res.json())
+                .then(data => {
+                    if(data.status === "success") {
+                        box.innerHTML = `
+                            <div class="bg-green-50 border-l-4 border-green-600 p-6 rounded-xl mt-4 text-sm flex gap-6 items-center shadow-inner">
+                                <img src="${data.photoURL}" class="w-24 h-24 object-cover rounded-xl border-2 border-green-600">
+                                <div>
+                                    <p><strong>Student Name:</strong> <span class="text-blue-900 font-bold">${data.studentName}</span></p>
+                                    <p><strong>Course:</strong> ${data.course}</p>
+                                    <p><strong>Enrollment:</strong> ${data.enrollmentNo} | <strong>Roll:</strong> ${data.rollNumber}</p>
+                                    <p class="text-green-700 font-extrabold mt-2">✔ STATUS: VERIFIED & APPROVED</p>
+                                    <button onclick="window.print()" class="mt-3 bg-blue-900 text-white px-4 py-2 rounded-lg text-xs font-bold"><i class="fa-solid fa-print"></i> Print Certificate</button>
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        box.innerHTML = '<p class="text-red-500 text-sm mt-4 font-semibold">❌ Koi verified record nahi mila!</p>';
+                    }
+                }).catch(() => { box.innerHTML = '<p class="text-red-500 text-sm mt-4">Connection error.</p>'; });
+        }
+
+        function submitAdmission(e) {
+            e.preventDefault();
+            const msg = document.getElementById('formMsg');
+            msg.innerHTML = '<span class="text-blue-600">Submitting admission...</span>';
+
+            const formData = {
+                atcId: loggedInATC ? loggedInATC.atcId : "ATC001",
+                studentName: document.getElementById('studentName').value,
+                fatherName: document.getElementById('fatherName').value,
+                course: document.getElementById('courseName').value,
+                photoURL: document.getElementById('photoURL').value,
+                courseFee: document.getElementById('courseFee').value,
+                paidFee: document.getElementById('paidFee').value
+            };
+
+            fetch(WEB_APP_URL, {
+                method: 'POST',
+                body: JSON.stringify(formData)
+            })
+            .then(res => res.json())
+            .then(data => {
+                if(data.status === "success") {
+                    msg.innerHTML = `<span class="text-green-600 font-bold">✅ Admission Submitted! App No: <b>${data.appNo}</b></span>`;
+                    document.getElementById('admissionForm').reset();
+                } else {
+                    msg.innerHTML = '<span class="text-red-600">Error submitting admission.</span>';
+                }
+            }).catch(() => { msg.innerHTML = '<span class="text-red-600">Network error.</span>'; });
         }
     </script>
 </body>
