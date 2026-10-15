@@ -6,47 +6,57 @@
     <title>KDS-IEC | ATC Center Login</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-slate-100 text-slate-900 flex items-center justify-center min-h-screen">
-    <div class="bg-white p-8 rounded-2xl shadow-xl max-w-md w-full border border-slate-200">
+<body class="bg-slate-900 text-white flex items-center justify-center min-h-screen">
+    <div class="bg-slate-800 p-8 rounded-2xl shadow-2xl max-w-md w-full border border-slate-700">
         <div class="text-center mb-6">
-            <h1 class="text-2xl font-bold text-blue-900">🏢 ATC Center Login</h1>
-            <p class="text-xs text-slate-500 mt-1">KDS-IEC Authorized Training Center Portal</p>
+            <h1 class="text-2xl font-bold text-blue-400">🏢 ATC Center Login</h1>
+            <p class="text-xs text-slate-400 mt-1">KDS-IEC Authorized Partner Portal</p>
         </div>
         
         <form onsubmit="handleLogin(event)" class="space-y-4">
             <div>
-                <label class="block text-xs font-bold text-slate-700 uppercase">ATC ID / Email</label>
-                <input type="text" id="atcId" placeholder="Jaise: ATC001" required class="border p-3 rounded-xl w-full mt-1 focus:ring-2 focus:ring-blue-900 outline-none">
+                <label class="block text-xs font-bold text-slate-300 uppercase">ATC ID / Center ID</label>
+                <input type="text" id="atcId" placeholder="Jaise: ATC001" required class="w-full bg-slate-900 border border-slate-700 p-3 rounded-xl focus:outline-none focus:border-blue-500 text-white mt-1 uppercase">
             </div>
             <div>
-                <label class="block text-xs font-bold text-slate-700 uppercase">Password</label>
-                <input type="password" id="atcPass" placeholder="******" required class="border p-3 rounded-xl w-full mt-1 focus:ring-2 focus:ring-blue-900 outline-none">
+                <label class="block text-xs font-bold text-slate-300 uppercase">Password</label>
+                <input type="password" id="atcPass" placeholder="******" required class="w-full bg-slate-900 border border-slate-700 p-3 rounded-xl focus:outline-none focus:border-blue-500 text-white mt-1">
             </div>
-            <button type="submit" class="w-full bg-blue-900 text-white py-3 rounded-xl font-bold hover:bg-blue-800 transition shadow-lg">Login to Dashboard</button>
+            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-bold transition shadow-lg">Login to Dashboard</button>
         </form>
         <div id="loginMsg" class="mt-4 text-center text-sm font-semibold"></div>
         
         <div class="mt-6 text-center">
-            <a href="iec.html" class="text-xs text-blue-700 font-semibold hover:underline">⬅ Back to Institute Portal</a>
+            <a href="index.html" class="text-xs text-blue-400 font-semibold hover:underline">⬅ Back to Home</a>
         </div>
     </div>
 
     <script>
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbypRMDzAnIT7X777dBnJGaO5tFk5kZuZeqGFj--ldAX1-0HYPWY66E2kfGxoyk4PZ2_/exec";
+
         function handleLogin(e) {
             e.preventDefault();
-            const id = document.getElementById('atcId').value;
-            const pass = document.getElementById('atcPass').value;
+            const id = document.getElementById('atcId').value.trim();
+            const pass = document.getElementById('atcPass').value.trim();
             const msg = document.getElementById('loginMsg');
+            msg.innerHTML = '<span class="text-blue-400">Checking credentials...</span>';
 
-            // Simple demo check (Aap ise Google Sheet API se connect kar sakte hain)
-            if(id === "ATC001" && pass === "admin123") {
-                msg.innerHTML = '<span class="text-green-600">Login Successful! Redirecting...</span>';
-                setTimeout(() => {
-                    window.location.href = "iec.html"; // Yahan ATC ka dashboard page khulega
-                }, 1000);
-            } else {
-                msg.innerHTML = '<span class="text-red-600">Invalid ATC ID or Password!</span>';
-            }
+            fetch(`${WEB_APP_URL}?action=atcLogin&id=${id}&pass=${pass}`)
+                .then(res => res.json())
+                .then(data => {
+                    if(data.status === "success") {
+                        // Login successful hote hi data browser mein save karke dashboard par bhej denge
+                        localStorage.setItem('atcData', JSON.stringify(data));
+                        msg.innerHTML = '<span class="text-green-400">Login Successful! Redirecting...</span>';
+                        setTimeout(() => {
+                            window.location.href = "iec.html";
+                        }, 800);
+                    } else {
+                        msg.innerHTML = '<span class="text-red-400">❌ Invalid ATC ID or Password!</span>';
+                    }
+                }).catch(() => {
+                    msg.innerHTML = '<span class="text-red-400">Connection error.</span>';
+                });
         }
     </script>
 </body>
