@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KDS Insurance | Services</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 text-slate-900">
+    <header class="bg-orange-600 text-white p-4 shadow flex justify-between items-center px-8">
+        <h1 class="text-2xl font-bold">🛡️ KDS Insurance Portal</h1>
+        <a href="index.html" class="bg-white text-orange-600 px-4 py-1.5 rounded-lg font-bold text-sm">⬅ Back to Home</a>
+    </header>
+
+    <main class="container mx-auto p-6 max-w-3xl my-10 bg-white rounded-2xl shadow-md">
+        <h2 class="text-2xl font-bold text-orange-600 mb-4">Aapka Apna Insurance Advisor</h2>
+        <p class="text-slate-700 leading-relaxed mb-6">
+            KDS Insurance ke madhyam se aapko Malwara mein behtareen bima paramarsh (Insurance Advisory) aur suvidhayein milti hain. 
+        </p>
+        <div class="bg-orange-50 p-6 rounded-xl border border-orange-200">
+            <h3 class="font-bold text-lg text-orange-800 mb-2">Contact Details:</h3>
+            <p><strong>Manager/Advisor:</strong> Manoher Singh Deora (Yashpal Singh)</p>
+            <p><strong>Location:</strong> Malwara, Rajasthan</p>
+            <p class="mt-4">
+                <a href="https://wa.me/919783811887" target="_blank" class="inline-block bg-green-600 text-white px-6 py-2.5 rounded-lg font-bold">💬 Chat on WhatsApp</a>
+            </p>
+        </div>
+    </main>
+</body>
+</html>
