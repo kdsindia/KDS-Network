@@ -11,7 +11,7 @@
 
     <div class="flex h-screen overflow-hidden">
         
-        <!-- Sidebar Navigation (Exact DITRP Style) -->
+        <!-- Sidebar Navigation (DITRP Style) -->
         <aside class="w-72 bg-[#0f172a] text-slate-300 flex flex-col shadow-xl overflow-y-auto text-xs">
             
             <!-- Brand Logo Header -->
@@ -26,60 +26,29 @@
             <nav class="p-4 space-y-6">
                 <!-- Main Dashboard -->
                 <div>
-                    <a href="#" onclick="switchTab('dashboard')" class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-blue-600 text-white font-bold shadow"><i class="fa-solid fa-house w-4"></i> Dashboard</a>
+                    <a href="#" onclick="showSection('dashboard')" class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-blue-600 text-white font-bold shadow"><i class="fa-solid fa-house w-4"></i> Dashboard</a>
                 </div>
 
                 <!-- Certificates Section -->
                 <div class="space-y-1">
                     <p class="text-[10px] font-bold uppercase text-slate-500 px-3 tracking-wider">Certificates</p>
-                    <a href="#" onclick="switchTab('apply-cert')" class="flex items-center justify-between px-3 py-2 rounded-lg hover:bg-slate-800 transition"><span class="flex items-center gap-2"><i class="fa-solid fa-file-arrow-up w-4 text-blue-400"></i> Apply for Certificate</span> <span class="bg-red-600 text-white text-[9px] px-1.5 py-0.5 rounded-full font-bold">22</span></a>
-                    <a href="#" onclick="switchTab('approved-cert')" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-800 transition"><i class="fa-solid fa-circle-check w-4 text-green-400"></i> Approved Certificates</a>
-                    <a href="#" onclick="switchTab('revenue')" class="flex items-center justify-between px-3 py-2 rounded-lg hover:bg-slate-800 transition"><span class="flex items-center gap-2"><i class="fa-solid fa-chart-line w-4 text-amber-400"></i> Revenue Analytics</span> <i class="fa-solid fa-crown text-amber-400 text-[10px]"></i></a>
-                    <a href="#" onclick="switchTab('wallet')" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-800 transition"><i class="fa-solid fa-wallet w-4 text-purple-400"></i> My Wallet</a>
-                    <a href="#" onclick="switchTab('recharge')" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-800 transition"><i class="fa-solid fa-gift w-4 text-pink-400"></i> Recharge Offers</a>
-                    <a href="#" onclick="switchTab('courier')" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-800 transition"><i class="fa-solid fa-truck w-4 text-teal-400"></i> Courier Wallet</a>
-                    <a href="#" onclick="switchTab('order-cert')" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-800 transition"><i class="fa-solid fa-box-archive w-4 text-indigo-400"></i> Order Certificate</a>
-                </div>
-
-                <!-- Batches Section -->
-                <div class="space-y-1">
-                    <p class="text-[10px] font-bold uppercase text-slate-500 px-3 tracking-wider">Batches</p>
-                    <a href="#" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-800 transition"><i class="fa-solid fa-layer-group w-4 text-blue-400"></i> Manage Batches</a>
-                </div>
-
-                <!-- Students Section -->
-                <div class="space-y-1">
-                    <p class="text-[10px] font-bold uppercase text-slate-500 px-3 tracking-wider">Students</p>
-                    <a href="#" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-800 transition"><i class="fa-solid fa-users w-4 text-blue-400"></i> Students List</a>
-                    <a href="#" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-800 transition"><i class="fa-solid fa-bell w-4 text-yellow-400"></i> Student Notifications</a>
-                    <a href="#" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-800 transition"><i class="fa-solid fa-rectangle-ad w-4 text-purple-400"></i> Popups</a>
-                    <a href="#" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-800 transition"><i class="fa-solid fa-comments w-4 text-green-400"></i> Student Enquiries</a>
+                    <a href="#" onclick="showSection('apply-cert')" class="flex items-center justify-between px-3 py-2 rounded-lg hover:bg-slate-800 transition"><span class="flex items-center gap-2"><i class="fa-solid fa-file-arrow-up w-4 text-blue-400"></i> Apply for Certificate</span> <span class="bg-red-600 text-white text-[9px] px-1.5 py-0.5 rounded-full font-bold">22</span></a>
+                    <a href="#" onclick="showSection('approved-cert')" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-800 transition"><i class="fa-solid fa-circle-check w-4 text-green-400"></i> Approved Certificates</a>
+                    <a href="#" onclick="showSection('wallet')" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-800 transition"><i class="fa-solid fa-wallet w-4 text-purple-400"></i> My Wallet</a>
+                    <a href="#" onclick="showSection('admission')" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-800 transition"><i class="fa-solid fa-user-plus w-4 text-indigo-400"></i> New Admission</a>
                 </div>
 
                 <!-- Student Attendance -->
                 <div class="space-y-1">
-                    <p class="text-[10px] font-bold uppercase text-slate-500 px-3 tracking-wider">Student Attendance</p>
+                    <p class="text-[10px] font-bold uppercase text-slate-500 px-3 tracking-wider">Student Attendance & Exams</p>
                     <a href="#" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-800 transition"><i class="fa-solid fa-calendar-check w-4"></i> Attendance Report</a>
-                    <a href="#" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-800 transition"><i class="fa-solid fa-user-check w-4"></i> Add Attendance</a>
-                    <a href="#" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-800 transition"><i class="fa-solid fa-qrcode w-4"></i> Add Attendance QR</a>
-                    <a href="#" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-800 transition"><i class="fa-solid fa-calendar-xmark w-4"></i> Leave Management</a>
-                    <a href="#" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-800 transition"><i class="fa-solid fa-umbrella-beach w-4"></i> Holidays</a>
-                    <a href="#" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-800 transition"><i class="fa-solid fa-bed w-4"></i> Week Off Days</a>
-                </div>
-
-                <!-- Student Exams -->
-                <div class="space-y-1">
-                    <p class="text-[10px] font-bold uppercase text-slate-500 px-3 tracking-wider">Student Exams</p>
                     <a href="#" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-800 transition"><i class="fa-solid fa-id-card w-4"></i> Generate Hall Tickets</a>
-                    <a href="#" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-800 transition"><i class="fa-solid fa-laptop-file w-4"></i> Mock Tests</a>
-                    <a href="#" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-800 transition"><i class="fa-solid fa-file-pen w-4"></i> Final Exams</a>
-                    <a href="#" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-800 transition"><i class="fa-solid fa-paper-plane w-4"></i> Exam Requests</a>
-                    <a href="#" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-800 transition"><i class="fa-solid fa-pen-to-square w-4"></i> Update Marks</a>
+                    <a href="#" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-800 transition"><i class="fa-solid fa-laptop-file w-4"></i> Mock Tests / Exams</a>
                 </div>
 
                 <!-- Logout -->
                 <div class="pt-4 border-t border-slate-800">
-                    <a href="index.html" class="flex items-center gap-2 px-3 py-2 rounded-lg text-red-400 hover:bg-red-950/40 transition font-bold"><i class="fa-solid fa-right-from-bracket w-4"></i> Logout</a>
+                    <a href="atc_login.html" class="flex items-center gap-2 px-3 py-2 rounded-lg text-red-400 hover:bg-red-950/40 transition font-bold"><i class="fa-solid fa-right-from-bracket w-4"></i> Logout</a>
                 </div>
             </nav>
         </aside>
@@ -91,53 +60,100 @@
             <header class="bg-white border-b border-slate-200 px-8 py-4 flex justify-between items-center shadow-sm">
                 <h2 class="font-bold text-base text-slate-800">Achieve More! ✨</h2>
                 <div class="flex items-center gap-3">
-                    <a href="#" class="border border-slate-300 px-4 py-1.5 rounded-lg text-xs font-bold text-slate-700 hover:bg-slate-50">Profile</a>
-                    <a href="index.html" class="bg-blue-600 text-white px-4 py-1.5 rounded-lg text-xs font-bold hover:bg-blue-700">Log out</a>
+                    <span id="headerCenterBadge" class="bg-blue-50 border border-blue-200 px-3 py-1 rounded-full text-xs font-bold text-blue-900">Loading Center...</span>
+                    <a href="atc_login.html" class="bg-red-600 text-white px-4 py-1.5 rounded-lg text-xs font-bold hover:bg-red-700">Log out</a>
                 </div>
             </header>
 
             <!-- Working Area -->
             <main class="p-8 max-w-6xl w-full mx-auto space-y-6">
                 
-                <!-- Welcome Banner -->
+                <!-- Welcome Banner (Dynamic from Google Sheet) -->
                 <div class="bg-gradient-to-r from-emerald-700 to-teal-800 text-white p-6 rounded-2xl shadow-md flex justify-between items-center">
                     <div>
-                        <h3 class="text-xl font-bold">Welcome, MANOHER SINGH DEORA</h3>
-                        <p class="text-xs text-emerald-200 mt-1">🏢 KUNWAR DIGITAL SERVICE AND INSTITUTE OF COMPUTER EDUCATION Dashboard</p>
+                        <h3 id="centerTitle" class="text-xl font-bold">Welcome, Loading...</h3>
+                        <p id="centerAddress" class="text-xs text-emerald-200 mt-1">🏢 Loading Center Details...</p>
                     </div>
                     <div class="bg-emerald-900/60 border border-emerald-500/40 px-4 py-2 rounded-xl text-right text-xs">
-                        <p class="text-[10px] text-emerald-300">Last Updated</p>
-                        <p class="font-bold">15-10-2026 07:55 PM</p>
+                        <p class="text-[10px] text-emerald-300">Wallet Balance</p>
+                        <p id="walletBal" class="font-bold text-sm">₹0.00</p>
                     </div>
                 </div>
 
-                <!-- Student Details Lookup Box -->
-                <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-200">
-                    <h4 class="text-xs font-bold uppercase text-slate-500 mb-2"><i class="fa-solid fa-magnifying-glass"></i> Student Details Lookup</h4>
-                    <select class="w-full border border-slate-300 p-3 rounded-xl text-sm outline-none focus:border-blue-600 bg-slate-50">
-                        <option>Select a student to view details...</option>
-                        <option>DAKSHRAJSINH S/O CHETANSINH RATHOD (Tally + GST)</option>
-                        <option>SHRUTI RAJPUROHIT (BCC)</option>
-                    </select>
-                </div>
-
-                <!-- Special Offers Banner -->
-                <div class="bg-gradient-to-r from-amber-600 to-orange-600 text-white p-4 rounded-xl shadow flex justify-between items-center text-sm font-semibold">
-                    <span>🎁 Special Offers: Save up to +0% extra on wallet recharge</span>
-                    <i class="fa-solid fa-arrow-right"></i>
-                </div>
-
-                <!-- Wallet Section -->
-                <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-200 grid md:grid-cols-2 gap-6 items-center">
-                    <div>
-                        <p class="text-xs text-slate-400 font-bold uppercase">Current Balance</p>
-                        <h3 class="text-4xl font-extrabold text-slate-800 mt-1">₹1,220.00</h3>
-                        <button onclick="alert('Wallet recharge request sent to Admin.')" class="mt-4 bg-blue-600 text-white px-5 py-2.5 rounded-xl text-xs font-bold shadow hover:bg-blue-700">Recharge Wallet</button>
+                <!-- 1. DASHBOARD SECTION -->
+                <div id="sec-dashboard" class="space-y-6">
+                    <!-- Student Details Lookup Box -->
+                    <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-200">
+                        <h4 class="text-xs font-bold uppercase text-slate-500 mb-2"><i class="fa-solid fa-magnifying-glass"></i> Student Details Lookup</h4>
+                        <input type="text" id="lookupRoll" placeholder="Roll Number ya Enrollment No daalkar search karein..." class="w-full border border-slate-300 p-3 rounded-xl text-sm outline-none focus:border-blue-600 bg-slate-50 mb-3">
+                        <button onclick="searchStudent()" class="bg-blue-900 text-white px-5 py-2 rounded-xl text-xs font-bold">Search Student</button>
+                        <div id="lookupResult" class="mt-4"></div>
                     </div>
-                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-xs text-slate-600">
-                        <p class="font-bold text-slate-700 mb-2">Wallet Overview</p>
-                        <p>Total Credits: ₹1,220.00</p>
-                        <p>Total Debits: ₹0.00</p>
+
+                    <!-- Quick Actions -->
+                    <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-200">
+                        <h3 class="font-bold text-lg text-slate-800 mb-4">⚡ Quick Actions</h3>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            <button onclick="showSection('admission')" class="p-4 bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded-xl text-center transition">
+                                <i class="fa-solid fa-user-plus text-2xl text-blue-900 mb-2"></i>
+                                <p class="text-xs font-bold text-blue-900">New Admission</p>
+                            </button>
+                            <button onclick="showSection('wallet')" class="p-4 bg-amber-50 hover:bg-amber-100 border border-amber-200 rounded-xl text-center transition">
+                                <i class="fa-solid fa-wallet text-2xl text-amber-700 mb-2"></i>
+                                <p class="text-xs font-bold text-amber-800">My Wallet</p>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. ADMISSION SECTION -->
+                <div id="sec-admission" class="bg-white p-6 rounded-2xl shadow-md border border-slate-200 hidden max-w-2xl">
+                    <h3 class="font-bold text-xl text-blue-900 mb-4 border-b pb-3"><i class="fa-solid fa-user-plus"></i> New Student Admission</h3>
+                    <form id="admissionForm" onsubmit="submitAdmission(event)" class="space-y-4 text-sm">
+                        <div>
+                            <label class="block font-bold text-slate-700">Student Full Name</label>
+                            <input type="text" id="studentName" required class="border p-3 rounded-xl w-full mt-1 outline-none focus:ring-2 focus:ring-blue-900">
+                        </div>
+                        <div>
+                            <label class="block font-bold text-slate-700">Father's Name</label>
+                            <input type="text" id="fatherName" required class="border p-3 rounded-xl w-full mt-1 outline-none focus:ring-2 focus:ring-blue-900">
+                        </div>
+                        <div>
+                            <label class="block font-bold text-slate-700">Select Course</label>
+                            <select id="courseName" class="border p-3 rounded-xl w-full mt-1 outline-none focus:ring-2 focus:ring-blue-900">
+                                <option value="Certificate in Accounting with GST">Certificate in Accounting with GST</option>
+                                <option value="Tally Prime Advance with GST">Tally Prime Advance with GST</option>
+                                <option value="Basic Computer Course (BCC)">Basic Computer Course (BCC)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block font-bold text-slate-700">Passport Photo URL</label>
+                            <input type="url" id="photoURL" placeholder="Image link paste karein" required class="border p-3 rounded-xl w-full mt-1 outline-none">
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block font-bold text-slate-700">Total Course Fee (₹)</label>
+                                <input type="number" id="courseFee" value="5000" class="border p-3 rounded-xl w-full mt-1">
+                            </div>
+                            <div>
+                                <label class="block font-bold text-slate-700">Paid Fee (₹)</label>
+                                <input type="number" id="paidFee" value="1000" class="border p-3 rounded-xl w-full mt-1">
+                            </div>
+                        </div>
+                        <button type="submit" class="w-full bg-green-700 text-white py-3 rounded-xl font-bold hover:bg-green-600 transition shadow-lg">Submit Admission</button>
+                    </form>
+                    <div id="formMsg" class="mt-4 text-center text-sm font-semibold"></div>
+                </div>
+
+                <!-- 3. WALLET SECTION -->
+                <div id="sec-wallet" class="bg-white p-6 rounded-2xl shadow-md border border-slate-200 hidden max-w-xl">
+                    <h3 class="font-bold text-xl text-blue-900 mb-4 border-b pb-3"><i class="fa-solid fa-wallet"></i> Wallet Overview</h3>
+                    <div class="bg-blue-50 p-6 rounded-xl border border-blue-200 flex justify-between items-center">
+                        <div>
+                            <p class="text-xs text-blue-700 font-bold uppercase">Current Available Balance</p>
+                            <h4 id="walletDisplay" class="text-3xl font-extrabold text-blue-900 mt-1">₹0.00</h4>
+                        </div>
+                        <button onclick="alert('Recharge request submitted to Admin.')" class="bg-blue-900 text-white px-5 py-2.5 rounded-xl font-bold text-xs shadow">Recharge Now</button>
                     </div>
                 </div>
 
@@ -145,5 +161,91 @@
         </div>
     </div>
 
+    <script>
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbypRMDzAnIT7X777dBnJGaO5tFk5kZuZeqGFj--ldAX1-0HYPWY66E2kfGxoyk4PZ2_/exec";
+
+        // Page load hone par localStorage se login ATC ki details fetch karna
+        window.onload = function() {
+            const storedATC = localStorage.getItem('atcData');
+            if(storedATC) {
+                const atc = JSON.parse(storedATC);
+                document.getElementById('centerTitle').innerText = `Welcome, ${atc.ownerName} (${atc.centerName})`;
+                document.getElementById('centerAddress').innerText = `🏢 Location / Address: ${atc.address} | ID: ${atc.atcId}`;
+                document.getElementById('walletBal').innerText = `₹${atc.walletBalance}`;
+                document.getElementById('walletDisplay').innerText = `₹${atc.walletBalance}`;
+                document.getElementById('headerCenterBadge').innerText = `🏢 ${atc.centerName} (${atc.address})`;
+            } else {
+                // Agar direct khola bina login kiye
+                document.getElementById('centerTitle').innerText = "Welcome, ATC Center Partner";
+                document.getElementById('centerAddress').innerText = "🏢 Please login via ATC Portal";
+            }
+        };
+
+        function showSection(sec) {
+            ['dashboard', 'admission', 'wallet'].forEach(id => {
+                document.getElementById('sec-' + id).classList.add('hidden');
+            });
+            document.getElementById('sec-' + sec).classList.remove('hidden');
+        }
+
+        function searchStudent() {
+            const roll = document.getElementById('lookupRoll').value.trim();
+            const box = document.getElementById('lookupResult');
+            if(!roll) { box.innerHTML = '<p class="text-red-500 text-xs">Kripya Roll Number dalein!</p>'; return; }
+            box.innerHTML = '<p class="text-slate-500 text-xs">Searching...</p>';
+
+            fetch(`${WEB_APP_URL}?action=verify&roll=${roll}`)
+                .then(res => res.json())
+                .then(data => {
+                    if(data.status === "success") {
+                        box.innerHTML = `
+                            <div class="bg-green-50 border p-4 rounded-xl mt-2 text-xs flex gap-4 items-center">
+                                <img src="${data.photoURL}" class="w-16 h-16 object-cover rounded-lg border">
+                                <div>
+                                    <p><strong>Name:</strong> ${data.studentName}</p>
+                                    <p><strong>Course:</strong> ${data.course}</p>
+                                    <p><strong>Enrollment:</strong> ${data.enrollmentNo} | <strong>Roll:</strong> ${data.rollNumber}</p>
+                                    <p class="text-green-700 font-bold mt-1">✔ Status: Approved & Verified</p>
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        box.innerHTML = '<p class="text-red-500 text-xs mt-2">❌ Record nahi mila ya approval pending hai.</p>';
+                    }
+                }).catch(() => { box.innerHTML = '<p class="text-red-500 text-xs">Error connecting database.</p>'; });
+        }
+
+        function submitAdmission(e) {
+            e.preventDefault();
+            const msg = document.getElementById('formMsg');
+            msg.innerHTML = '<span class="text-blue-600">Submitting admission...</span>';
+
+            const storedATC = JSON.parse(localStorage.getItem('atcData') || '{}');
+
+            const formData = {
+                atcId: storedATC.atcId || "ATC001",
+                studentName: document.getElementById('studentName').value,
+                fatherName: document.getElementById('fatherName').value,
+                course: document.getElementById('courseName').value,
+                photoURL: document.getElementById('photoURL').value,
+                courseFee: document.getElementById('courseFee').value,
+                paidFee: document.getElementById('paidFee').value
+            };
+
+            fetch(WEB_APP_URL, {
+                method: 'POST',
+                body: JSON.stringify(formData)
+            })
+            .then(res => res.json())
+            .then(data => {
+                if(data.status === "success") {
+                    msg.innerHTML = `<span class="text-green-600 font-bold">✅ Admission Submitted! App No: <b>${data.appNo}</b></span>`;
+                    document.getElementById('admissionForm').reset();
+                } else {
+                    msg.innerHTML = '<span class="text-red-600">Error submitting admission.</span>';
+                }
+            }).catch(() => { msg.innerHTML = '<span class="text-red-600">Network error.</span>'; });
+        }
+    </script>
 </body>
 </html>
