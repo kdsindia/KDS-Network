@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KDS-IEC | Student Admission</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-100 text-slate-900 py-10 px-4">
+    <div class="max-w-xl mx-auto bg-white p-8 rounded-2xl shadow-xl border border-slate-200">
+        <div class="text-center mb-6">
+            <h1 class="text-2xl font-bold text-blue-900">📝 New Student Admission Form</h1>
+            <p class="text-xs text-slate-500 mt-1">KDS-IEC Vocational Training Courses</p>
+        </div>
+
+        <form id="admissionForm" onsubmit="submitAdmission(event)" class="space-y-4">
+            <div>
+                <label class="block text-xs font-bold text-slate-700 uppercase">Student Full Name</label>
+                <input type="text" id="studentName" required class="border p-3 rounded-xl w-full mt-1 outline-none focus:ring-2 focus:ring-blue-900">
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-slate-700 uppercase">Father's Name</label>
+                <input type="text" id="fatherName" required class="border p-3 rounded-xl w-full mt-1 outline-none focus:ring-2 focus:ring-blue-900">
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-slate-700 uppercase">Select Course</label>
+                <select id="courseName" class="border p-3 rounded-xl w-full mt-1 outline-none focus:ring-2 focus:ring-blue-900">
+                    <option value="Certificate in Accounting with GST">Certificate in Accounting with GST</option>
+                    <option value="Tally Prime Advance with GST">Tally Prime Advance with GST</option>
+                    <option value="Basic Computer Course (BCC)">Basic Computer Course (BCC)</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-slate-700 uppercase">Passport Photo URL</label>
+                <input type="url" id="photoURL" placeholder="Image link paste karein" required class="border p-3 rounded-xl w-full mt-1 outline-none focus:ring-2 focus:ring-blue-900">
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase">Total Fee (₹)</label>
+                    <input type="number" id="courseFee" value="5000" class="border p-3 rounded-xl w-full mt-1">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase">Paid Fee (₹)</label>
+                    <input type="number" id="paidFee" value="1000" class="border p-3 rounded-xl w-full mt-1">
+                </div>
+            </div>
+            <button type="submit" class="w-full bg-green-700 text-white py-3 rounded-xl font-bold hover:bg-green-600 transition shadow-lg">Submit Application</button>
+        </form>
+
+        <div id="formMsg" class="mt-4 text-center text-sm font-semibold"></div>
+        <div class="mt-6 text-center">
+            <a href="iec.html" class="text-xs text-blue-700 font-semibold hover:underline">⬅ Back to Portal</a>
+        </div>
+    </div>
+
+    <script>
+        const WEB_APP_URL = "YOUR_WEB_APP_URL_HERE"; // Apna Google Apps Script URL yahan daalein
+
+        function submitAdmission(e) {
+            e.preventDefault();
+            const msg = document.getElementById('formMsg');
+            msg.innerHTML = '<span class="text-blue-600">Submitting form...</span>';
+
+            const formData = {
+                studentName: document.getElementById('studentName').value,
+                fatherName: document.getElementById('fatherName').value,
+                course: document.getElementById('courseName').value,
+                photoURL: document.getElementById('photoURL').value,
+                courseFee: document.getElementById('courseFee').value,
+                paidFee: document.getElementById('paidFee').value
+            };
+
+            fetch(WEB_APP_URL, {
+                method: 'POST',
+                body: JSON.stringify(formData)
+            })
+            .then(res => res.json())
+            .then(data => {
+                if(data.status === "success") {
+                    msg.innerHTML = `<span class="text-green-600">✅ Submitted! Application No: <b>${data.appNo}</b></span>`;
+                    document.getElementById('admissionForm').reset();
+                } else {
+                    msg.innerHTML = '<span class="text-red-600">Error submitting form.</span>';
+                }
+            }).catch(() => {
+                msg.innerHTML = '<span class="text-red-600">Network error.</span>';
+            });
+        }
+    </script>
+</body>
+</html>
