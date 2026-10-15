@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KDS-IEC | ATC Management Portal</title>
+    <title>KDS-IEC | ATC Management & Student Portal</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -31,19 +31,18 @@
 
                 <!-- Certificates Section -->
                 <div class="space-y-1">
-                    <p class="text-[10px] font-bold uppercase text-slate-500 px-3 tracking-wider">Certificates</p>
-                    <a href="#" onclick="showSection('apply-cert')" class="flex items-center justify-between px-3 py-2 rounded-lg hover:bg-slate-800 transition"><span class="flex items-center gap-2"><i class="fa-solid fa-file-arrow-up w-4 text-blue-400"></i> Apply for Certificate</span> <span class="bg-red-600 text-white text-[9px] px-1.5 py-0.5 rounded-full font-bold">22</span></a>
-                    <a href="#" onclick="showSection('approved-cert')" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-800 transition"><i class="fa-solid fa-circle-check w-4 text-green-400"></i> Approved Certificates</a>
-                    <a href="#" onclick="showSection('wallet')" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-800 transition"><i class="fa-solid fa-wallet w-4 text-purple-400"></i> My Wallet</a>
+                    <p class="text-[10px] font-bold uppercase text-slate-500 px-3 tracking-wider">Certificates & Services</p>
+                    <a href="#" onclick="showSection('verification')" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-800 transition"><i class="fa-solid fa-certificate w-4 text-green-400"></i> Verify Certificate</a>
                     <a href="#" onclick="showSection('admission')" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-800 transition"><i class="fa-solid fa-user-plus w-4 text-indigo-400"></i> New Admission</a>
+                    <a href="#" onclick="showSection('wallet')" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-800 transition"><i class="fa-solid fa-wallet w-4 text-purple-400"></i> My Wallet</a>
                 </div>
 
-                <!-- Student Attendance -->
+                <!-- Student Management -->
                 <div class="space-y-1">
-                    <p class="text-[10px] font-bold uppercase text-slate-500 px-3 tracking-wider">Student Attendance & Exams</p>
+                    <p class="text-[10px] font-bold uppercase text-slate-500 px-3 tracking-wider">Students & Exams</p>
+                    <a href="#" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-800 transition"><i class="fa-solid fa-users w-4 text-blue-400"></i> Students List</a>
                     <a href="#" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-800 transition"><i class="fa-solid fa-calendar-check w-4"></i> Attendance Report</a>
                     <a href="#" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-800 transition"><i class="fa-solid fa-id-card w-4"></i> Generate Hall Tickets</a>
-                    <a href="#" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-800 transition"><i class="fa-solid fa-laptop-file w-4"></i> Mock Tests / Exams</a>
                 </div>
 
                 <!-- Logout -->
@@ -68,7 +67,7 @@
             <!-- Working Area -->
             <main class="p-8 max-w-6xl w-full mx-auto space-y-6">
                 
-                <!-- Welcome Banner (Dynamic from Google Sheet) -->
+                <!-- Welcome Banner (Dynamic from Google Sheet session) -->
                 <div class="bg-gradient-to-r from-emerald-700 to-teal-800 text-white p-6 rounded-2xl shadow-md flex justify-between items-center">
                     <div>
                         <h3 id="centerTitle" class="text-xl font-bold">Welcome, Loading...</h3>
@@ -82,15 +81,15 @@
 
                 <!-- 1. DASHBOARD SECTION -->
                 <div id="sec-dashboard" class="space-y-6">
-                    <!-- Student Details Lookup Box -->
                     <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-200">
                         <h4 class="text-xs font-bold uppercase text-slate-500 mb-2"><i class="fa-solid fa-magnifying-glass"></i> Student Details Lookup</h4>
-                        <input type="text" id="lookupRoll" placeholder="Roll Number ya Enrollment No daalkar search karein..." class="w-full border border-slate-300 p-3 rounded-xl text-sm outline-none focus:border-blue-600 bg-slate-50 mb-3">
-                        <button onclick="searchStudent()" class="bg-blue-900 text-white px-5 py-2 rounded-xl text-xs font-bold">Search Student</button>
+                        <div class="flex gap-2">
+                            <input type="text" id="lookupRoll" placeholder="Roll Number ya Enrollment No daalkar search karein..." class="w-full border border-slate-300 p-3 rounded-xl text-sm outline-none focus:border-blue-600 bg-slate-50">
+                            <button onclick="searchStudent()" class="bg-blue-900 text-white px-6 py-3 rounded-xl text-xs font-bold">Search</button>
+                        </div>
                         <div id="lookupResult" class="mt-4"></div>
                     </div>
 
-                    <!-- Quick Actions -->
                     <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-200">
                         <h3 class="font-bold text-lg text-slate-800 mb-4">⚡ Quick Actions</h3>
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -98,15 +97,33 @@
                                 <i class="fa-solid fa-user-plus text-2xl text-blue-900 mb-2"></i>
                                 <p class="text-xs font-bold text-blue-900">New Admission</p>
                             </button>
+                            <button onclick="showSection('verification')" class="p-4 bg-green-50 hover:bg-green-100 border border-green-200 rounded-xl text-center transition">
+                                <i class="fa-solid fa-certificate text-2xl text-green-700 mb-2"></i>
+                                <p class="text-xs font-bold text-green-800">Verify Certificate</p>
+                            </button>
                             <button onclick="showSection('wallet')" class="p-4 bg-amber-50 hover:bg-amber-100 border border-amber-200 rounded-xl text-center transition">
                                 <i class="fa-solid fa-wallet text-2xl text-amber-700 mb-2"></i>
                                 <p class="text-xs font-bold text-amber-800">My Wallet</p>
                             </button>
+                            <a href="index.html" class="p-4 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl text-center transition block">
+                                <i class="fa-solid fa-globe text-2xl text-slate-700 mb-2"></i>
+                                <p class="text-xs font-bold text-slate-800">Main Website</p>
+                            </a>
                         </div>
                     </div>
                 </div>
 
-                <!-- 2. ADMISSION SECTION -->
+                <!-- 2. VERIFICATION SECTION -->
+                <div id="sec-verification" class="bg-white p-6 rounded-2xl shadow-md border border-slate-200 hidden">
+                    <h3 class="font-bold text-xl text-blue-900 mb-4 border-b pb-3"><i class="fa-solid fa-certificate"></i> Online Certificate Verification</h3>
+                    <div class="flex gap-2 max-w-xl">
+                        <input type="text" id="verifyRoll" placeholder="Roll Number ya Enrollment No dalein..." class="border p-3 rounded-xl w-full focus:ring-2 focus:ring-blue-900 outline-none text-sm">
+                        <button onclick="verifyCertificateModal()" class="bg-blue-900 text-white px-6 py-3 rounded-xl font-semibold text-sm hover:bg-blue-800">Search</button>
+                    </div>
+                    <div id="verifyResult" class="mt-6"></div>
+                </div>
+
+                <!-- 3. ADMISSION SECTION -->
                 <div id="sec-admission" class="bg-white p-6 rounded-2xl shadow-md border border-slate-200 hidden max-w-2xl">
                     <h3 class="font-bold text-xl text-blue-900 mb-4 border-b pb-3"><i class="fa-solid fa-user-plus"></i> New Student Admission</h3>
                     <form id="admissionForm" onsubmit="submitAdmission(event)" class="space-y-4 text-sm">
@@ -145,7 +162,7 @@
                     <div id="formMsg" class="mt-4 text-center text-sm font-semibold"></div>
                 </div>
 
-                <!-- 3. WALLET SECTION -->
+                <!-- 4. WALLET SECTION -->
                 <div id="sec-wallet" class="bg-white p-6 rounded-2xl shadow-md border border-slate-200 hidden max-w-xl">
                     <h3 class="font-bold text-xl text-blue-900 mb-4 border-b pb-3"><i class="fa-solid fa-wallet"></i> Wallet Overview</h3>
                     <div class="bg-blue-50 p-6 rounded-xl border border-blue-200 flex justify-between items-center">
@@ -162,9 +179,9 @@
     </div>
 
     <script>
+        // Aapka Official Google Apps Script Web App URL
         const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbypRMDzAnIT7X777dBnJGaO5tFk5kZuZeqGFj--ldAX1-0HYPWY66E2kfGxoyk4PZ2_/exec";
 
-        // Page load hone par localStorage se login ATC ki details fetch karna
         window.onload = function() {
             const storedATC = localStorage.getItem('atcData');
             if(storedATC) {
@@ -175,14 +192,13 @@
                 document.getElementById('walletDisplay').innerText = `₹${atc.walletBalance}`;
                 document.getElementById('headerCenterBadge').innerText = `🏢 ${atc.centerName} (${atc.address})`;
             } else {
-                // Agar direct khola bina login kiye
                 document.getElementById('centerTitle').innerText = "Welcome, ATC Center Partner";
                 document.getElementById('centerAddress').innerText = "🏢 Please login via ATC Portal";
             }
         };
 
         function showSection(sec) {
-            ['dashboard', 'admission', 'wallet'].forEach(id => {
+            ['dashboard', 'verification', 'admission', 'wallet'].forEach(id => {
                 document.getElementById('sec-' + id).classList.add('hidden');
             });
             document.getElementById('sec-' + sec).classList.remove('hidden');
@@ -213,6 +229,34 @@
                         box.innerHTML = '<p class="text-red-500 text-xs mt-2">❌ Record nahi mila ya approval pending hai.</p>';
                     }
                 }).catch(() => { box.innerHTML = '<p class="text-red-500 text-xs">Error connecting database.</p>'; });
+        }
+
+        function verifyCertificateModal() {
+            const roll = document.getElementById('verifyRoll').value.trim();
+            const box = document.getElementById('verifyResult');
+            if(!roll) { box.innerHTML = '<p class="text-red-500 text-sm">Kripya Roll Number dalein!</p>'; return; }
+            box.innerHTML = '<p class="text-slate-500 text-sm">Searching...</p>';
+
+            fetch(`${WEB_APP_URL}?action=verify&roll=${roll}`)
+                .then(res => res.json())
+                .then(data => {
+                    if(data.status === "success") {
+                        box.innerHTML = `
+                            <div class="bg-green-50 border-l-4 border-green-600 p-6 rounded-xl mt-4 text-sm flex gap-6 items-center shadow-inner">
+                                <img src="${data.photoURL}" class="w-24 h-24 object-cover rounded-xl border-2 border-green-600">
+                                <div>
+                                    <p><strong>Student Name:</strong> <span class="text-blue-900 font-bold">${data.studentName}</span></p>
+                                    <p><strong>Course:</strong> ${data.course}</p>
+                                    <p><strong>Enrollment:</strong> ${data.enrollmentNo} | <strong>Roll:</strong> ${data.rollNumber}</p>
+                                    <p class="text-green-700 font-extrabold mt-2">✔ STATUS: VERIFIED & APPROVED</p>
+                                    <button onclick="window.print()" class="mt-3 bg-blue-900 text-white px-4 py-2 rounded-lg text-xs font-bold"><i class="fa-solid fa-print"></i> Print Certificate</button>
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        box.innerHTML = '<p class="text-red-500 text-sm mt-4 font-semibold">❌ Koi verified record nahi mila!</p>';
+                    }
+                }).catch(() => { box.innerHTML = '<p class="text-red-500 text-sm mt-4">Connection error.</p>'; });
         }
 
         function submitAdmission(e) {
