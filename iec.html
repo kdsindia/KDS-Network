@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KDS-IEC | Institute Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 text-slate-900">
+    <header class="bg-blue-900 text-white p-4 shadow flex justify-between items-center px-8">
+        <h1 class="text-2xl font-bold">🎓 KDS-IEC Institute Portal</h1>
+        <a href="index.html" class="bg-white text-blue-900 px-4 py-1.5 rounded-lg font-bold text-sm">⬅ Back to Home</a>
+    </header>
+
+    <main class="container mx-auto p-4 max-w-2xl my-8 grid gap-6">
+        
+        <!-- Verification Box -->
+        <div class="bg-white p-6 rounded-2xl shadow-md">
+            <h2 class="text-xl font-bold mb-4 text-blue-900">🔍 Online Certificate Verification</h2>
+            <div class="flex gap-2">
+                <input type="text" id="rollInput" placeholder="Roll Number ya Enrollment No dalein..." class="border p-2.5 rounded-xl w-full focus:ring-2 focus:ring-blue-900">
+                <button onclick="verifyCertificate()" class="bg-blue-900 text-white px-6 py-2.5 rounded-xl font-semibold">Search</button>
+            </div>
+            <div id="resultBox" class="mt-4"></div>
+        </div>
+
+    </main>
+
+    <script>
+        const WEB_APP_URL = "YOUR_WEB_APP_URL_HERE"; // Apne Google Apps Script ka URL yahan dalein
+
+        function verifyCertificate() {
+            const roll = document.getElementById('rollInput').value.trim();
+            const box = document.getElementById('resultBox');
+            if(!roll) {
+                box.innerHTML = '<p class="text-red-500 text-sm">Kripya valid Roll Number dalein!</p>';
+                return;
+            }
+            box.innerHTML = '<p class="text-slate-500 text-sm">Searching database...</p>';
+
+            fetch(`${WEB_APP_URL}?action=verify&roll=${roll}`)
+                .then(res => res.json())
+                .then(data => {
+                    if(data.status === "success") {
+                        box.innerHTML = `
+                            <div class="bg-green-50 border-l-4 border-green-600 p-4 rounded-xl mt-4 text-sm flex gap-4 items-center">
+                                <img src="${data.photoURL}" class="w-20 h-20 object-cover rounded-lg border">
+                                <div>
+                                    <p><strong>Name:</strong> ${data.studentName}</p>
+                                    <p><strong>Course:</strong> ${data.course}</p>
+                                    <p><strong>Enrollment No:</strong> ${data.enrollmentNo}</p>
+                                    <p><strong>Roll Number:</strong> ${data.rollNumber}</p>
+                                    <p class="text-green-700 font-bold mt-1">✔ STATUS: VERIFIED & APPROVED</p>
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        box.innerHTML = '<p class="text-red-500 text-sm mt-4">❌ Koi verified record nahi mila!</p>';
+                    }
+                }).catch(() => {
+                    box.innerHTML = '<p class="text-red-500 text-sm mt-4">Connection error.</p>';
+                });
+        }
+    </script>
+</body>
+</html>
