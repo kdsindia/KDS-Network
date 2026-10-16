@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATC Dashboard - KDS-IEC</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f8fafc;
+            margin: 0;
+            padding: 20px;
+        }
+        .header {
+            background: #1e293b;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .container {
+            margin-top: 30px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+        .card h3 { color: #0284c7; margin-bottom: 15px; }
+        .btn {
+            display: inline-block;
+            background: #2563eb;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        .btn:hover { background: #1d4ed8; }
+        .logout { background: #dc2626; }
+        .logout:hover { background: #b91c1c; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div>
+            <h2 id="centerTitle" style="margin:0;">ATC Dashboard</h2>
+            <p style="margin:5px 0 0 0; color:#94a3b8; font-size:14px;">KDS-IEC Partner Portal</p>
+        </div>
+        <div>
+            <a href="atc_login.html" class="btn logout">Logout</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <h3>Student Admission</h3>
+            <p>Naye student ka admission karein.</p>
+            <a href="iec.html" class="btn">Open Form</a>
+        </div>
+        <div class="card">
+            <h3>Wallet Balance</h3>
+            <p id="walletInfo">Loading balance...</p>
+            <a href="#" class="btn">Add Money</a>
+        </div>
+        <div class="card">
+            <h3>Certificates</h3>
+            <p>Approved certificates ki list dekhein.</p>
+            <a href="#" class="btn">View List</a>
+        </div>
+    </div>
+
+    <script>
+        // LocalStorage se center ka naam aur balance dikhana
+        const centerName = localStorage.getItem("centerName");
+        if (centerName) {
+            document.getElementById("centerTitle").textContent = centerName;
+        }
+        
+        const wallet = localStorage.getItem("walletBalance");
+        if (wallet) {
+            document.getElementById("walletInfo").textContent = "Balance: ₹ " + wallet;
+        } else {
+            document.getElementById("walletInfo").textContent = "Balance: ₹ 0";
+        }
+    </script>
+
+</body>
+</html>
