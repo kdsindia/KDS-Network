@@ -96,10 +96,9 @@
                 let result = await response.json();
                 
                 if (result.status === "success") {
+                    localStorage.setItem("atcId", document.getElementById('atcId').value.trim());
                     localStorage.setItem("centerName", result.centerName);
-                    localStorage.setItem("atcId", requestData.atcId);
                     localStorage.setItem("walletBalance", result.walletBalance);
-                    
                     window.location.href = "dashboard.html";
                 } else {
                     errorMsg.textContent = result.message;
