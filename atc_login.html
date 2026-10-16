@@ -4,60 +4,115 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KDS-IEC | ATC Center Login</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #0f172a;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .login-card {
+            background: #1e293b;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 400px;
+            color: white;
+            text-align: center;
+        }
+        h2 { margin-bottom: 5px; color: #38bdf8; }
+        p { color: #94a3b8; font-size: 14px; margin-bottom: 25px; }
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            background: #0f172a;
+            border: 1px solid #334155;
+            color: white;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        input:focus { border-color: #38bdf8; outline: none; }
+        button {
+            background: #2563eb;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            width: 100%;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 15px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        button:hover { background: #1d4ed8; }
+        #errorMsg { color: #f87171; margin-top: 15px; font-size: 14px; }
+    </style>
 </head>
-<body class="bg-slate-900 text-white flex items-center justify-center min-h-screen">
-    <div class="bg-slate-800 p-8 rounded-2xl shadow-2xl max-w-md w-full border border-slate-700">
-        <div class="text-center mb-6">
-            <h1 class="text-2xl font-bold text-blue-400">🏢 ATC Center Login</h1>
-            <p class="text-xs text-slate-400 mt-1">KDS-IEC Authorized Partner Portal</p>
-        </div>
+<body>
+
+    <div class="login-card">
+        <h2>ATC Center Login</h2>
+        <p>KDS-IEC Authorized Partner Portal</p>
         
-        <form onsubmit="handleLogin(event)" class="space-y-4">
-            <div>
-                <label class="block text-xs font-bold text-slate-300 uppercase">ATC ID / Center ID</label>
-                <input type="text" id="atcId" placeholder="Jaise: ATC001" required class="w-full bg-slate-900 border border-slate-700 p-3 rounded-xl focus:outline-none focus:border-blue-500 text-white mt-1 uppercase">
-            </div>
-            <div>
-                <label class="block text-xs font-bold text-slate-300 uppercase">Password</label>
-                <input type="password" id="atcPass" placeholder="******" required class="w-full bg-slate-900 border border-slate-700 p-3 rounded-xl focus:outline-none focus:border-blue-500 text-white mt-1">
-            </div>
-            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-bold transition shadow-lg">Login to Dashboard</button>
+        <form id="loginForm">
+            <input type="text" id="atcId" placeholder="ATC ID / Center ID ( jaise: ATC001 )" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <button type="submit" id="loginBtn">Login to Dashboard</button>
         </form>
-        <div id="loginMsg" class="mt-4 text-center text-sm font-semibold"></div>
         
-        <div class="mt-6 text-center">
-            <a href="index.html" class="text-xs text-blue-400 font-semibold hover:underline">⬅ Back to Home</a>
-        </div>
+        <div id="errorMsg"></div>
     </div>
 
     <script>
-        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbypRMDzAnIT7X777dBnJGaO5tFk5kZuZeqGFj--ldAX1-0HYPWY66E2kfGxoyk4PZ2_/exec";
+        // Aapka Web App URL
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbypRMDzAnIT7X777dBnJGaO5tFk5kZuZeqGFj--ldAX1-0HYPWY66E2kfGxoyk4PZ2_/exec';
 
-        function handleLogin(e) {
+        const form = document.getElementById('loginForm');
+        const errorMsg = document.getElementById('errorMsg');
+        const loginBtn = document.getElementById('loginBtn');
+
+        form.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const id = document.getElementById('atcId').value.trim();
-            const pass = document.getElementById('atcPass').value.trim();
-            const msg = document.getElementById('loginMsg');
-            msg.innerHTML = '<span class="text-blue-400">Checking credentials...</span>';
+            errorMsg.textContent = "Logging in...";
+            loginBtn.disabled = true;
 
-            fetch(`${WEB_APP_URL}?action=atcLogin&id=${id}&pass=${pass}`)
-                .then(res => res.json())
-                .then(data => {
-                    if(data.status === "success") {
-                        // Login successful hote hi data browser mein save karke dashboard par bhej denge
-                        localStorage.setItem('atcData', JSON.stringify(data));
-                        msg.innerHTML = '<span class="text-green-400">Login Successful! Redirecting...</span>';
-                        setTimeout(() => {
-                            window.location.href = "iec.html";
-                        }, 800);
-                    } else {
-                        msg.innerHTML = '<span class="text-red-400">❌ Invalid ATC ID or Password!</span>';
-                    }
-                }).catch(() => {
-                    msg.innerHTML = '<span class="text-red-400">Connection error.</span>';
+            let requestData = {
+                action: "atcLogin",
+                atcId: document.getElementById('atcId').value.trim(),
+                password: document.getElementById('password').value.trim()
+            };
+
+            try {
+                let response = await fetch(scriptURL, {
+                    method: 'POST',
+                    body: JSON.stringify(requestData)
                 });
-        }
+                
+                let result = await response.json();
+                
+                if (result.status === "success") {
+                    alert("Login Successful! Swagat hai, " + result.centerName);
+                    // Yahan aap dashboard par redirect kar sakte hain, jaise:
+                    // window.location.href = "dashboard.html";
+                    errorMsg.textContent = "";
+                } else {
+                    errorMsg.textContent = result.message;
+                }
+            } catch (err) {
+                console.error(err);
+                errorMsg.textContent = "Connection error. Kripya dobara koshish karein.";
+            } finally {
+                loginBtn.disabled = false;
+            }
+        });
     </script>
+
 </body>
 </html>
