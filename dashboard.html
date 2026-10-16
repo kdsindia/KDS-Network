@@ -3,204 +3,667 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KDS-IEC | ATC Partner Dashboard</title>
+    <title>KDS-IEC | ATC Franchise Dashboard</title>
     <style>
-        :root {
-            --primary-color: #0f766e;
-            --sidebar-bg: #1e293b;
-            --bg-color: #f1f5f9;
-            --text-dark: #334155;
-            --white: #ffffff;
-        }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            background-color: var(--bg-color);
-            display: flex;
-        }
-        /* Sidebar */
-        .sidebar {
-            width: 260px;
-            background-color: var(--sidebar-bg);
-            height: 100vh;
-            color: var(--white);
-            position: fixed;
-            overflow-y: auto;
-        }
-        .sidebar-header {
-            padding: 20px;
-            background: #0f172a;
-            text-align: center;
-            font-size: 20px;
-            font-weight: bold;
-            color: #38bdf8;
-        }
-        .menu-category {
-            font-size: 11px;
-            text-transform: uppercase;
-            color: #94a3b8;
-            padding: 15px 20px 5px 20px;
-            letter-spacing: 1px;
-        }
-        .sidebar a {
-            display: block;
-            color: #cbd5e1;
-            padding: 12px 20px;
-            text-decoration: none;
-            font-size: 14px;
-            transition: 0.3s;
-        }
-        .sidebar a:hover, .sidebar a.active {
-            background-color: #334155;
-            color: var(--white);
-            border-left: 4px solid #38bdf8;
-        }
-        /* Main Content */
-        .main-content {
-            margin-left: 260px;
-            flex: 1;
-            padding: 30px;
-        }
-        .top-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-        }
-        .welcome-banner {
-            background: linear-gradient(135deg, #0f766e, #115e59);
-            color: white;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            margin-bottom: 25px;
-        }
-        .welcome-banner h2 { margin: 0 0 5px 0; }
-        .welcome-banner p { margin: 0; opacity: 0.9; font-size: 14px; }
+        * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { margin: 0; background-color: #f4f7f6; display: flex; height: 100vh; overflow: hidden; }
         
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-        }
-        .card {
-            background: var(--white);
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-        .card h3 { margin-top: 0; color: var(--text-dark); font-size: 18px; border-bottom: 2px solid #f1f5f9; padding-bottom: 10px; }
+        /* Sidebar Styling */
+        .sidebar { width: 250px; background: #ffffff; border-right: 1px solid #e2e8f0; display: flex; flex-direction: column; height: 100vh; overflow-y: auto; }
+        .sidebar-brand { padding: 18px 20px; font-size: 19px; font-weight: bold; color: #0f172a; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; gap: 8px; }
+        .menu-cat { font-size: 11px; font-weight: 700; color: #64748b; padding: 15px 20px 5px; text-transform: uppercase; }
+        .menu-btn { display: flex; align-items: center; gap: 10px; width: 100%; border: none; background: none; padding: 11px 20px; text-align: left; font-size: 14px; color: #334155; cursor: pointer; transition: 0.2s; }
+        .menu-btn:hover, .menu-btn.active { background: #f1f5f9; color: #0f766e; font-weight: 600; border-left: 4px solid #0f766e; }
+
+        /* Main Area */
+        .main { flex: 1; display: flex; flex-direction: column; height: 100vh; overflow-y: auto; padding: 20px 30px; }
+        .top-nav { background: #ffffff; padding: 15px 25px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 1px 3px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        .top-nav h3 { margin: 0; font-size: 16px; color: #0f172a; }
+        .top-right { display: flex; align-items: center; gap: 15px; }
+        .atc-badge { color: #0284c7; font-weight: bold; font-size: 14px; }
+        .logout-btn { background: #dc2626; color: white; border: none; padding: 7px 14px; border-radius: 6px; cursor: pointer; font-weight: 600; text-decoration: none; font-size: 13px; }
+
+        /* Welcome Banner */
+        .banner { background: #0f766e; color: white; padding: 25px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .banner h1 { margin: 0 0 5px 0; font-size: 24px; }
+        .banner p { margin: 0; font-size: 14px; opacity: 0.9; }
+        .time-badge { background: rgba(255,255,255,0.2); padding: 8px 14px; border-radius: 6px; font-size: 12px; }
+
+        /* Sections & Cards */
+        .section { display: none; }
+        .section.active { display: block; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .card { background: white; padding: 22px; border-radius: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.04); margin-bottom: 20px; }
+        .wallet-card { background: #064e3b; color: white; }
+        .wallet-bal { font-size: 32px; font-weight: bold; margin: 12px 0; }
         
-        /* Wallet Box */
-        .wallet-card {
-            background: linear-gradient(135deg, #1e293b, #0f172a);
-            color: white;
-        }
-        .wallet-balance {
-            font-size: 32px;
-            font-weight: bold;
-            color: #4ade80;
-            margin: 15px 0;
-        }
-        .btn {
-            display: inline-block;
-            background: #2563eb;
-            color: white;
-            padding: 8px 16px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-size: 14px;
-            border: none;
-            cursor: pointer;
-        }
-        .btn:hover { background: #1d4ed8; }
-        .logout-btn { background: #dc2626; }
-        .logout-btn:hover { background: #b91c1c; }
+        /* Forms & Tables */
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        label { display: block; font-size: 13px; font-weight: 600; color: #475569; margin-bottom: 5px; }
+        input, select, textarea { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; margin-bottom: 12px; }
+        .btn { background: #2563eb; color: white; border: none; padding: 10px 18px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 14px; }
+        .btn-green { background: #10b981; }
+        .btn-sm { padding: 6px 12px; font-size: 12px; }
+
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 14px; }
+        th, td { border-bottom: 1px solid #e2e8f0; padding: 12px 10px; text-align: left; }
+        th { background: #f8fafc; color: #475569; font-weight: 600; }
+        .badge { padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; }
+        .bg-pending { background: #fef3c7; color: #d97706; }
+        .bg-approved { background: #dcfce7; color: #15803d; }
+        .bg-info { background: #e0f2fe; color: #0369a1; }
+
+        /* ID Card & Hall Ticket Print Cards */
+        .print-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 15px; }
+        .id-card { border: 2px solid #0f766e; border-radius: 10px; padding: 15px; background: #fff; text-align: center; }
+        .id-card h4 { margin: 0 0 5px; color: #0f766e; }
     </style>
 </head>
 <body>
 
-    <!-- Sidebar Menu -->
+    <!-- Left Sidebar -->
     <div class="sidebar">
-        <div class="sidebar-header">KDS-IEC Portal</div>
+        <div class="sidebar-brand">🛡️ KDS-IEC Portal</div>
         
-        <a href="dashboard.html" class="active">🏠 Dashboard</a>
-        
-        <div class="menu-category">Student Management</div>
-        <a href="iec.html">➕ New Student Admission</a>
-        <a href="#">📋 Students List</a>
-        <a href="#">🆔 Bulk ID Card Print</a>
-        <a href="#">🔍 Student Enquiries</a>
+        <button class="menu-btn active" onclick="showTab('tab-dashboard', this)">🏠 Dashboard</button>
 
-        <div class="menu-category">Attendance</div>
-        <a href="#">📊 Attendance Report</a>
-        <a href="#">⏰ Add Attendance</a>
+        <div class="menu-cat">Certificates</div>
+        <button class="menu-btn" onclick="showTab('tab-apply-cert', this)">📜 Apply for Certificate</button>
+        <button class="menu-btn" onclick="showTab('tab-approved-cert', this)">✅ Approved Certificates</button>
+        <button class="menu-btn" onclick="showTab('tab-order-cert', this)">📦 Order Certificate</button>
 
-        <div class="menu-category">Exams & Certificates</div>
-        <a href="#">📝 Generate Hall Tickets</a>
-        <a href="#">✏️ Update Exam Marks</a>
-        <a href="#">📜 Apply For Certificate</a>
-        <a href="#">📦 Order Certificate Requests</a>
+        <div class="menu-cat">Students</div>
+        <button class="menu-btn" onclick="showTab('tab-students-list', this)">👥 Students List</button>
+        <button class="menu-btn" onclick="showTab('tab-new-admission', this)">➕ New Admissions</button>
+        <button class="menu-btn" onclick="showTab('tab-id-card', this)">🪪 Bulk ID Card Print</button>
+        <button class="menu-btn" onclick="showTab('tab-enquiries', this)">📊 Student Enquiries</button>
 
-        <div class="menu-category">Account</div>
-        <a href="atc_login.html" class="logout-btn" style="margin: 20px; text-align: center; border-radius: 5px;">🚪 Log Out</a>
+        <div class="menu-cat">Student Attendance</div>
+        <button class="menu-btn" onclick="showTab('tab-att-report', this)">📈 Attendance Report</button>
+        <button class="menu-btn" onclick="showTab('tab-add-att', this)">🕒 Add Attendance</button>
+        <button class="menu-btn" onclick="showTab('tab-leaves', this)">🏖️ Leave Management</button>
+
+        <div class="menu-cat">Student Exams</div>
+        <button class="menu-btn" onclick="showTab('tab-hall-ticket', this)">🎟️ Generate Hall Tickets</button>
+        <button class="menu-btn" onclick="showTab('tab-mock-test', this)">📝 Mock Tests</button>
+        <button class="menu-btn" onclick="showTab('tab-update-marks', this)">✏️ Update Exam Marks</button>
     </div>
 
-    <!-- Main Content Area -->
-    <div class="main-content">
-        <div class="top-bar">
-            <h2>Partner Dashboard</h2>
-            <span id="currentDate" style="color: #64748b; font-weight: 500;"></span>
+    <!-- Right Main Panel -->
+    <div class="main">
+        <div class="top-nav">
+            <h3>KDS-IEC Partner Panel</h3>
+            <div class="top-right">
+                <span class="atc-badge" id="navAtcId">ID: ATC001</span>
+                <button class="btn btn-sm" onclick="loadAllData()">🔄 Refresh Data</button>
+                <a href="atc_login.html" class="logout-btn" onclick="localStorage.clear()">Logout</a>
+            </div>
         </div>
 
-        <!-- Welcome Banner -->
-        <div class="welcome-banner">
-            <h2 id="centerNameDisp">Welcome, ATC Partner</h2>
-            <p>KDS-IEC Authorized Computer Education Center Management Panel</p>
-        </div>
-
-        <!-- Widgets Grid -->
-        <div class="grid-container">
-            <!-- Wallet Overview -->
-            <div class="card wallet-card">
-                <h3>My Wallet</h3>
-                <p style="color: #94a3b8; font-size: 13px; margin:0;">CURRENT BALANCE</p>
-                <div class="wallet-balance" id="walletDisp">₹ 0</div>
-                <a href="#" class="btn" style="background: #059669;">Recharge Wallet</a>
+        <!-- 1. DASHBOARD TAB -->
+        <div id="tab-dashboard" class="section active">
+            <div class="banner">
+                <div>
+                    <h1 id="welcomeCenter">Welcome, Center</h1>
+                    <p id="welcomeSub">Center ID: ATC001</p>
+                </div>
+                <div class="time-badge" id="lastUpdated">Last Updated: --:--</div>
             </div>
 
-            <!-- Student Lookup Quick Action -->
+            <div class="grid-2">
+                <div class="card wallet-card">
+                    <p style="margin:0; font-size:13px; opacity:0.8;">CURRENT WALLET BALANCE</p>
+                    <div class="wallet-bal" id="walletBalDisplay">₹ 0</div>
+                    <button class="btn btn-green" onclick="rechargeWalletPrompt()">💳 Recharge Wallet</button>
+                </div>
+                <div class="card">
+                    <h3>Quick Actions</h3>
+                    <p style="color:#64748b; font-size:14px;">Naye student ka admission karne ya list dekhne ke liye niche click karein:</p>
+                    <button class="btn" onclick="document.querySelectorAll('.menu-btn')[5].click()">Go to Admissions</button>
+                    <button class="btn btn-green" style="margin-left:10px;" onclick="document.querySelectorAll('.menu-btn')[4].click()">Students List</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. APPLY FOR CERTIFICATE -->
+        <div id="tab-apply-cert" class="section">
             <div class="card">
-                <h3>Student Lookup</h3>
-                <p style="color: #64748b; font-size: 14px;">Apne center ke kisi bhi student ka record turant dekhein.</p>
-                <input type="text" placeholder="Search by Enrollment/Name..." style="width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #cbd5e1; border-radius: 5px; box-sizing: border-box;">
-                <button class="btn">Search Student</button>
-            </div>
-
-            <!-- Quick Notice / Offers -->
-            <div class="card">
-                <h3>Special Offers</h3>
-                <p style="color: #d97706; font-weight: bold;">Wallet Recharge Offer!</p>
-                <p style="color: #64748b; font-size: 13px;">Har wallet recharge par paye extra cashback. Adhik jankari ke liye contact karein.</p>
+                <h3>📜 Apply for Certificate</h3>
+                <p style="color:#64748b; font-size:13px;">Jin students ke exam marks update ho chuke hain, unke certificate approval ke liye Admin ko request bhejein.</p>
+                <table>
+                    <thead>
+                        <tr><th>Enrollment No</th><th>Student Name</th><th>Course</th><th>Exam Marks</th><th>Status</th><th>Action</th></tr>
+                    </thead>
+                    <tbody id="applyCertTable"></tbody>
+                </table>
             </div>
         </div>
+
+        <!-- 3. APPROVED CERTIFICATES -->
+        <div id="tab-approved-cert" class="section">
+            <div class="card">
+                <h3>✅ Approved Certificates (By Admin)</h3>
+                <p style="color:#64748b; font-size:13px;">Admin dwara approve kiye gaye certificates ki list (Google Sheet me Status = 'Approved' hone par yahan dikhega).</p>
+                <table>
+                    <thead>
+                        <tr><th>Enrollment No</th><th>Student Name</th><th>Father Name</th><th>Course</th><th>Marks</th><th>Status</th></tr>
+                    </thead>
+                    <tbody id="approvedCertTable"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 4. ORDER CERTIFICATE -->
+        <div id="tab-order-cert" class="section">
+            <div class="card">
+                <h3>📦 Order Hardcopy Certificate</h3>
+                <p style="color:#64748b; font-size:13px;">Approved certificates ki hardcopy mangwane ke liye Order request lagayein.</p>
+                <table>
+                    <thead>
+                        <tr><th>Enrollment No</th><th>Student Name</th><th>Course</th><th>Current Status</th><th>Action</th></tr>
+                    </thead>
+                    <tbody id="orderCertTable"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 5. STUDENTS LIST -->
+        <div id="tab-students-list" class="section">
+            <div class="card">
+                <h3>👥 Enrolled Students List</h3>
+                <input type="text" id="stuSearch" placeholder="Search student by name or enrollment no..." onkeyup="renderStudentsList()">
+                <table>
+                    <thead>
+                        <tr><th>App No</th><th>Enrollment No</th><th>Roll No</th><th>Student Name</th><th>Father Name</th><th>Course</th><th>Fee Paid</th><th>Status</th></tr>
+                    </thead>
+                    <tbody id="studentsListTable"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 6. NEW ADMISSIONS -->
+        <div id="tab-new-admission" class="section">
+            <div class="card">
+                <h3>➕ New Student Admission Form</h3>
+                <form id="admissionForm">
+                    <div class="form-grid">
+                        <div>
+                            <label>Student Full Name *</label>
+                            <input type="text" id="admName" required placeholder="Student ka naam">
+                        </div>
+                        <div>
+                            <label>Father's Name *</label>
+                            <input type="text" id="admFather" required placeholder="Pita ka naam">
+                        </div>
+                        <div>
+                            <label>Select Course *</label>
+                            <select id="admCourse" required>
+                                <option value="CTG - Certificate in Tally">CTG - Certificate in Tally (3 Month)</option>
+                                <option value="BCC - Basic Computer Course">BCC - Basic Computer Course (3 Month)</option>
+                                <option value="DCA - Diploma in Computer App">DCA - Diploma in Computer Application</option>
+                                <option value="ADCA - Advance Diploma">ADCA - Advance Diploma</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label>Mobile Number *</label>
+                            <input type="tel" id="admMobile" required placeholder="10 digit mobile number">
+                        </div>
+                        <div>
+                            <label>Total Course Fee (₹)</label>
+                            <input type="number" id="admCourseFee" value="3500" required>
+                        </div>
+                        <div>
+                            <label>Paid Fee (₹)</label>
+                            <input type="number" id="admPaidFee" value="1500" required>
+                        </div>
+                    </div>
+                    <label>Full Address *</label>
+                    <textarea id="admAddress" rows="2" required placeholder="Student ka pura pata"></textarea>
+                    <button type="submit" class="btn btn-green" id="admSubmitBtn">Submit Admission</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- 7. BULK ID CARD PRINT -->
+        <div id="tab-id-card" class="section">
+            <div class="card">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+                    <h3 style="margin:0;">🪪 Student ID Cards</h3>
+                    <button class="btn" onclick="window.print()">🖨️ Print All ID Cards</button>
+                </div>
+                <div class="print-grid" id="idCardContainer"></div>
+            </div>
+        </div>
+
+        <!-- 8. STUDENT ENQUIRIES -->
+        <div id="tab-enquiries" class="section">
+            <div class="card">
+                <h3>📊 New Student Enquiry</h3>
+                <form id="enquiryForm" class="form-grid">
+                    <input type="text" id="enqName" placeholder="Student Name" required>
+                    <input type="tel" id="enqMobile" placeholder="Mobile Number" required>
+                    <input type="text" id="enqCourse" placeholder="Interested Course (e.g. Tally, BCC)" required>
+                    <input type="text" id="enqNotes" placeholder="Follow-up Remark / Notes" required>
+                    <button type="submit" class="btn">Save Enquiry</button>
+                </form>
+                <h4 style="margin-top:25px;">Enquiry History</h4>
+                <table>
+                    <thead><tr><th>Date</th><th>Student Name</th><th>Mobile</th><th>Course</th><th>Notes</th></tr></thead>
+                    <tbody id="enquiryTable"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 9. ATTENDANCE REPORT -->
+        <div id="tab-att-report" class="section">
+            <div class="card">
+                <h3>📈 Attendance Report</h3>
+                <table>
+                    <thead><tr><th>Date</th><th>Enrollment No</th><th>Student Name</th><th>Status</th></tr></thead>
+                    <tbody id="attReportTable"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 10. ADD ATTENDANCE -->
+        <div id="tab-add-att" class="section">
+            <div class="card">
+                <h3>🕒 Mark Daily Attendance</h3>
+                <label>Select Date:</label>
+                <input type="date" id="attDate" style="max-width:220px;">
+                <table>
+                    <thead><tr><th>Enrollment No</th><th>Student Name</th><th>Course</th><th>Mark Present / Absent</th></tr></thead>
+                    <tbody id="markAttTable"></tbody>
+                </table>
+                <button class="btn btn-green" style="margin-top:15px;" onclick="submitAttendance()">Save Attendance</button>
+            </div>
+        </div>
+
+        <!-- 11. LEAVE MANAGEMENT -->
+        <div id="tab-leaves" class="section">
+            <div class="card">
+                <h3>🏖️ Student Leave Application</h3>
+                <form id="leaveForm" class="form-grid">
+                    <input type="text" id="leaveStuName" placeholder="Student Name & Enrollment No" required>
+                    <input type="date" id="leaveDate" required>
+                    <input type="text" id="leaveReason" placeholder="Leave Reason" required>
+                    <button type="submit" class="btn">Record Leave</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- 12. GENERATE HALL TICKETS -->
+        <div id="tab-hall-ticket" class="section">
+            <div class="card">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+                    <h3 style="margin:0;">🎟️ Exam Hall Tickets</h3>
+                    <button class="btn" onclick="window.print()">🖨️ Print Hall Tickets</button>
+                </div>
+                <div class="print-grid" id="hallTicketContainer"></div>
+            </div>
+        </div>
+
+        <!-- 13. MOCK TESTS -->
+        <div id="tab-mock-test" class="section">
+            <div class="card">
+                <h3>📝 Online Mock Test Portal</h3>
+                <p>Students ke practice test ke liye niche diye gaye course test links ka upyog karein:</p>
+                <table>
+                    <thead><tr><th>Course Code</th><th>Subject Name</th><th>Total Questions</th><th>Duration</th><th>Action</th></tr></thead>
+                    <tbody>
+                        <tr><td>BCC</td><td>Basic Computer Fundamentals</td><td>50 Qs</td><td>60 Mins</td><td><button class="btn btn-sm" onclick="alert('Mock Test Link Copied for Student!')">Start / Share Link</button></td></tr>
+                        <tr><td>CTG</td><td>Certificate in Tally Prime & GST</td><td>50 Qs</td><td>60 Mins</td><td><button class="btn btn-sm" onclick="alert('Mock Test Link Copied for Student!')">Start / Share Link</button></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 14. UPDATE EXAM MARKS -->
+        <div id="tab-update-marks" class="section">
+            <div class="card">
+                <h3>✏️ Update Student Exam Marks</h3>
+                <p style="color:#64748b; font-size:13px;">Yahan se apne center ke students ke exam marks चढ़ाएं। Marks save hone ke baad aap Certificate ke liye apply kar sakenge.</p>
+                <table>
+                    <thead>
+                        <tr><th>Enrollment No</th><th>Roll No</th><th>Student Name</th><th>Course</th><th>Current Marks</th><th>Enter Marks (Out of 100)</th><th>Action</th></tr>
+                    </thead>
+                    <tbody id="updateMarksTable"></tbody>
+                </table>
+            </div>
+        </div>
+
     </div>
 
     <script>
-        // Date display
-        document.getElementById("currentDate").textContent = new Date().toLocaleDateString('hi-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbypRMDzAnIT7X777dBnJGaO5tFk5kZuZeqGFj--ldAX1-0HYPWY66E2kfGxoyk4PZ2_/exec';
+        
+        const atcId = localStorage.getItem("atcId") || "ATC002";
+        const centerName = localStorage.getItem("centerName") || "Nice Computer";
+        let allStudents = [];
+        let allAttendance = [];
+        let allEnquiries = [];
 
-        // LocalStorage se login data uthana jo atc_login.html se save hua tha
-        const centerName = localStorage.getItem("centerName");
-        if (centerName) {
-            document.getElementById("centerNameDisp").textContent = "Welcome, " + centerName;
+        // Set Initial UI
+        document.getElementById("navAtcId").textContent = "ID: " + atcId;
+        document.getElementById("welcomeCenter").textContent = "Welcome, " + centerName;
+        document.getElementById("welcomeSub").textContent = "Center ID: " + atcId;
+        document.getElementById("attDate").valueAsDate = new Date();
+
+        // Tab Switching Function
+        function showTab(tabId, btn) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            btn.classList.add('active');
         }
 
-        const walletBalance = localStorage.getItem("walletBalance");
-        if (walletBalance) {
-            document.getElementById("walletDisp").textContent = "₹ " + walletBalance;
+        // Fetch All Data from Google Sheet
+        async function loadAllData() {
+            document.getElementById("lastUpdated").textContent = "Updating...";
+            try {
+                let res = await fetch(scriptURL, {
+                    method: 'POST',
+                    body: JSON.stringify({ action: "getDashboardData", atcId: atcId })
+                });
+                let data = await res.json();
+                if (data.status === "success") {
+                    document.getElementById("walletBalDisplay").textContent = "₹ " + data.walletBalance;
+                    allStudents = data.students || [];
+                    allAttendance = data.attendance || [];
+                    allEnquiries = data.enquiries || [];
+                    
+                    renderStudentsList();
+                    renderUpdateMarks();
+                    renderApplyCert();
+                    renderApprovedCert();
+                    renderOrderCert();
+                    renderIdCardsAndTickets();
+                    renderAttendance();
+                    renderEnquiries();
+                    
+                    document.getElementById("lastUpdated").textContent = "Last Updated: " + new Date().toLocaleTimeString();
+                }
+            } catch (e) {
+                console.error(e);
+                document.getElementById("lastUpdated").textContent = "Sync Failed";
+            }
         }
+
+        // Render Students List
+        function renderStudentsList() {
+            const search = (document.getElementById("stuSearch").value || "").toLowerCase();
+            const tbody = document.getElementById("studentsListTable");
+            tbody.innerHTML = "";
+            allStudents.filter(s => s.studentName.toLowerCase().includes(search) || s.enrollmentNo.toLowerCase().includes(search))
+            .forEach(s => {
+                tbody.innerHTML += `<tr>
+                    <td>${s.appNo}</td>
+                    <td><b>${s.enrollmentNo}</b></td>
+                    <td>${s.rollNo}</td>
+                    <td>${s.studentName}</td>
+                    <td>${s.fatherName}</td>
+                    <td>${s.course}</td>
+                    <td>₹${s.paidFee} / ₹${s.courseFee}</td>
+                    <td><span class="badge bg-info">${s.status || 'Enrolled'}</span></td>
+                </tr>`;
+            });
+        }
+
+        // Render Update Marks Table
+        function renderUpdateMarks() {
+            const tbody = document.getElementById("updateMarksTable");
+            tbody.innerHTML = "";
+            allStudents.forEach(s => {
+                tbody.innerHTML += `<tr>
+                    <td><b>${s.enrollmentNo}</b></td>
+                    <td>${s.rollNo}</td>
+                    <td>${s.studentName}</td>
+                    <td>${s.course}</td>
+                    <td>${s.marks ? s.marks + '%' : 'Not Updated'}</td>
+                    <td><input type="number" id="marks_${s.enrollmentNo}" value="${s.marks}" placeholder="Marks %" style="width:100px; margin:0;"></td>
+                    <td><button class="btn btn-sm" onclick="saveMarks('${s.enrollmentNo}')">Save Marks</button></td>
+                </tr>`;
+            });
+        }
+
+        async function saveMarks(enrollNo) {
+            const marksVal = document.getElementById("marks_" + enrollNo).value;
+            if (!marksVal) return alert("Kripya marks enter karein!");
+            let res = await fetch(scriptURL, {
+                method: 'POST',
+                body: JSON.stringify({ action: "updateStudentStatus", enrollmentNo: enrollNo, marks: marksVal, newStatus: "Marks Updated" })
+            });
+            let result = await res.json();
+            alert(result.message);
+            loadAllData();
+        }
+
+        // Render Apply Certificate
+        function renderApplyCert() {
+            const tbody = document.getElementById("applyCertTable");
+            tbody.innerHTML = "";
+            allStudents.forEach(s => {
+                let actionBtn = s.status === "Cert Applied" || s.status === "Approved" || s.status === "Cert Ordered"
+                    ? `<span class="badge bg-pending">${s.status}</span>`
+                    : `<button class="btn btn-sm btn-green" onclick="changeStatus('${s.enrollmentNo}', 'Cert Applied')">Apply for Approval</button>`;
+                tbody.innerHTML += `<tr>
+                    <td><b>${s.enrollmentNo}</b></td>
+                    <td>${s.studentName}</td>
+                    <td>${s.course}</td>
+                    <td>${s.marks || 'N/A'}</td>
+                    <td>${s.status}</td>
+                    <td>${actionBtn}</td>
+                </tr>`;
+            });
+        }
+
+        // Render Approved Certificates (Only those approved by Admin in Google Sheet)
+        function renderApprovedCert() {
+            const tbody = document.getElementById("approvedCertTable");
+            tbody.innerHTML = "";
+            allStudents.filter(s => s.status === "Approved" || s.status === "Cert Ordered").forEach(s => {
+                tbody.innerHTML += `<tr>
+                    <td><b>${s.enrollmentNo}</b></td>
+                    <td>${s.studentName}</td>
+                    <td>${s.fatherName}</td>
+                    <td>${s.course}</td>
+                    <td>${s.marks}%</td>
+                    <td><span class="badge bg-approved">${s.status}</span></td>
+                </tr>`;
+            });
+        }
+
+        // Render Order Certificate Request
+        function renderOrderCert() {
+            const tbody = document.getElementById("orderCertTable");
+            tbody.innerHTML = "";
+            allStudents.filter(s => s.status === "Approved" || s.status === "Cert Ordered").forEach(s => {
+                let btn = s.status === "Cert Ordered" 
+                    ? `<span class="badge bg-approved">Order Requested ✅</span>`
+                    : `<button class="btn btn-sm" onclick="changeStatus('${s.enrollmentNo}', 'Cert Ordered')">Request Hardcopy Order</button>`;
+                tbody.innerHTML += `<tr>
+                    <td><b>${s.enrollmentNo}</b></td>
+                    <td>${s.studentName}</td>
+                    <td>${s.course}</td>
+                    <td>${s.status}</td>
+                    <td>${btn}</td>
+                </tr>`;
+            });
+        }
+
+        async function changeStatus(enrollNo, statusText) {
+            let res = await fetch(scriptURL, {
+                method: 'POST',
+                body: JSON.stringify({ action: "updateStudentStatus", enrollmentNo: enrollNo, newStatus: statusText })
+            });
+            let result = await res.json();
+            alert(result.message);
+            loadAllData();
+        }
+
+        // Render ID Cards & Hall Tickets
+        function renderIdCardsAndTickets() {
+            const idBox = document.getElementById("idCardContainer");
+            const htBox = document.getElementById("hallTicketContainer");
+            idBox.innerHTML = "";
+            htBox.innerHTML = "";
+            allStudents.forEach(s => {
+                idBox.innerHTML += `<div class="id-card">
+                    <h4>KDS-IEC STUDENT ID</h4>
+                    <p style="font-size:12px; color:#64748b; margin:2px 0;">Center: ${centerName}</p>
+                    <hr>
+                    <p><b>Name:</b> ${s.studentName}</p>
+                    <p><b>Father:</b> ${s.fatherName}</p>
+                    <p><b>Enroll No:</b> ${s.enrollmentNo}</p>
+                    <p><b>Course:</b> ${s.course}</p>
+                </div>`;
+
+                htBox.innerHTML += `<div class="id-card">
+                    <h4>EXAM HALL TICKET</h4>
+                    <p style="font-size:12px; color:#64748b; margin:2px 0;">KDS-IEC Examination</p>
+                    <hr>
+                    <p><b>Roll No:</b> ${s.rollNo}</p>
+                    <p><b>Enrollment:</b> ${s.enrollmentNo}</p>
+                    <p><b>Candidate:</b> ${s.studentName}</p>
+                    <p><b>Course:</b> ${s.course}</p>
+                    <p><b>Exam Center:</b> ${centerName}</p>
+                </div>`;
+            });
+        }
+
+        // Render Attendance
+        function renderAttendance() {
+            const markBody = document.getElementById("markAttTable");
+            markBody.innerHTML = "";
+            allStudents.forEach(s => {
+                markBody.innerHTML += `<tr>
+                    <td>${s.enrollmentNo}</td>
+                    <td>${s.studentName}</td>
+                    <td>${s.course}</td>
+                    <td>
+                        <select class="att-select" data-enroll="${s.enrollmentNo}" data-name="${s.studentName}" style="margin:0; width:120px;">
+                            <option value="Present">Present</option>
+                            <option value="Absent">Absent</option>
+                        </select>
+                    </td>
+                </tr>`;
+            });
+
+            const repBody = document.getElementById("attReportTable");
+            repBody.innerHTML = "";
+            allAttendance.forEach(a => {
+                repBody.innerHTML += `<tr><td>${new Date(a.date).toLocaleDateString()}</td><td>${a.enrollmentNo}</td><td>${a.studentName}</td><td><b>${a.status}</b></td></tr>`;
+            });
+        }
+
+        async function submitAttendance() {
+            const date = document.getElementById("attDate").value;
+            const selects = document.querySelectorAll(".att-select");
+            let records = [];
+            selects.forEach(sel => {
+                records.push({
+                    enrollmentNo: sel.getAttribute("data-enroll"),
+                    studentName: sel.getAttribute("data-name"),
+                    status: sel.value
+                });
+            });
+            if (records.length === 0) return alert("Koi student nahi mila!");
+            let res = await fetch(scriptURL, {
+                method: 'POST',
+                body: JSON.stringify({ action: "saveAttendance", atcId: atcId, date: date, records: records })
+            });
+            let result = await res.json();
+            alert(result.message);
+            loadAllData();
+        }
+
+        // Render Enquiries
+        function renderEnquiries() {
+            const tbody = document.getElementById("enquiryTable");
+            tbody.innerHTML = "";
+            allEnquiries.forEach(e => {
+                tbody.innerHTML += `<tr><td>${e.date}</td><td>${e.studentName}</td><td>${e.mobile}</td><td>${e.course}</td><td>${e.notes}</td></tr>`;
+            });
+        }
+
+        // New Admission Submit
+        document.getElementById("admissionForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById("admSubmitBtn");
+            btn.disabled = true;
+            btn.textContent = "Submitting...";
+            let payload = {
+                action: "addAdmission",
+                atcId: atcId,
+                studentName: document.getElementById("admName").value,
+                fatherName: document.getElementById("admFather").value,
+                course: document.getElementById("admCourse").value,
+                mobile: document.getElementById("admMobile").value,
+                courseFee: document.getElementById("admCourseFee").value,
+                paidFee: document.getElementById("admPaidFee").value,
+                address: document.getElementById("admAddress").value
+            };
+            let res = await fetch(scriptURL, { method: 'POST', body: JSON.stringify(payload) });
+            let result = await res.json();
+            alert(result.message);
+            e.target.reset();
+            btn.disabled = false;
+            btn.textContent = "Submit Admission";
+            loadAllData();
+        });
+
+        // Enquiry Submit
+        document.getElementById("enquiryForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            let payload = {
+                action: "addEnquiry",
+                atcId: atcId,
+                studentName: document.getElementById("enqName").value,
+                mobile: document.getElementById("enqMobile").value,
+                course: document.getElementById("enqCourse").value,
+                notes: document.getElementById("enqNotes").value
+            };
+            let res = await fetch(scriptURL, { method: 'POST', body: JSON.stringify(payload) });
+            let result = await res.json();
+            alert(result.message);
+            e.target.reset();
+            loadAllData();
+        });
+
+        // Leave Submit
+        document.getElementById("leaveForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            let payload = {
+                action: "addEnquiry",
+                atcId: atcId,
+                studentName: document.getElementById("leaveStuName").value,
+                mobile: "LEAVE",
+                course: document.getElementById("leaveDate").value,
+                notes: document.getElementById("leaveReason").value
+            };
+            let res = await fetch(scriptURL, { method: 'POST', body: JSON.stringify(payload) });
+            let result = await res.json();
+            alert("Student Leave Record Save Ho Gaya!");
+            e.target.reset();
+            loadAllData();
+        });
+
+        // Wallet Recharge Request
+        async function rechargeWalletPrompt() {
+            let amount = prompt("Kitne rupaye (₹) ka recharge request lagana hai?");
+            if (!amount) return;
+            let utr = prompt("Payment UTR / Reference Number dalein:");
+            if (!utr) return;
+            let res = await fetch(scriptURL, {
+                method: 'POST',
+                body: JSON.stringify({ action: "rechargeRequest", atcId: atcId, amount: amount, utr: utr })
+            });
+            let result = await res.json();
+            alert(result.message);
+        }
+
+        // Load data on start
+        loadAllData();
     </script>
-
 </body>
 </html>
