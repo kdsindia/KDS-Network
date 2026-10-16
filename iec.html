@@ -32,6 +32,7 @@
             margin: 10px 0;
             border: 1px solid #ccc;
             border-radius: 4px;
+            box-sizing: border-box;
         }
         button {
             background: #28a745;
@@ -63,44 +64,57 @@
     <div class="form-container">
         <h3>Naya Student Admission Form</h3>
         <form id="atcForm">
-            <label>ATC Center Code / Name:</label>
-            <input type="text" id="atcCode" placeholder="Apna ATC Code dalein" required>
-
             <label>Student Ka Naam:</label>
             <input type="text" id="studentName" placeholder="Student ka pura naam" required>
 
+            <label>Pita Ka Naam (Father Name):</label>
+            <input type="text" id="fatherName" placeholder="Pita ka naam" required>
+
             <label>Course Ka Naam:</label>
-            <input type="text" id="courseName" placeholder="Course ka naam" required>
+            <input type="text" id="course" placeholder="Course ka naam" required>
 
             <label>Mobile Number:</label>
             <input type="tel" id="mobile" placeholder="Mobile number" required>
 
+            <label>Address:</label>
+            <textarea id="address" placeholder="Pura pata dalein" rows="3" required></textarea>
+
             <button type="submit">Admission Submit Karein</button>
         </form>
-        <p class="note">* Note: Form submit hone ke baad Certificate aapke (Admin) approval ke baad hi generate hoga aur aap Certificate Order ki request bhej sakenge.</p>
+        <p class="note">* Note: Form submit hone ke baad data seedhe aapke Google Sheet ke 'Admissions' tab me save ho jayega.</p>
     </div>
 
     <script>
-        // Google Apps Script Web App URL yahan enter karein jo Google Sheet se connect karega
-        const scriptURL = 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
+        // Aapka Google Apps Script Web App URL yahan set kar diya gaya hai
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbypRMDzAnIT7X777dBnJGaO5tFk5kZuZeqGFj--ldAX1-0HYPWY66E2kfGxoyk4PZ2_/exec';
 
         const form = document.getElementById('atcForm');
         form.addEventListener('submit', e => {
             e.preventDefault();
+            
             let formData = {
-                atcCode: document.getElementById('atcCode').value,
+                action: "addAdmission",
                 studentName: document.getElementById('studentName').value,
-                courseName: document.getElementById('courseName').value,
+                fatherName: document.getElementById('fatherName').value,
+                course: document.getElementById('course').value,
                 mobile: document.getElementById('mobile').value,
-                status: 'Pending Admin Approval'
+                address: document.getElementById('address').value
             };
 
-            fetch(scriptURL, { method: 'POST', body: JSON.stringify(formData) })
-                .then(response => {
-                    alert('Student Admission Successfully Submit Ho Gaya Hai! Admin Approval ke baad certificate process hoga.');
-                    form.reset();
-                })
-                .catch(error => console.error('Error!', error.message));
+            fetch(scriptURL, { 
+                method: 'POST', 
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData) 
+            })
+            .then(response => {
+                alert('Student Admission Successfully Submit Ho Gaya Hai!');
+                form.reset();
+            })
+            .catch(error => {
+                console.error('Error!', error.message);
+                alert('Kuch error aayi hai, kripya dobara koshish karein.');
+            });
         });
     </script>
 
